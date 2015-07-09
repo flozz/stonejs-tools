@@ -1,0 +1,40 @@
+{
+  "name": "stonejs-tools",
+  "version": "0.0.0",
+  "description": "Tools for extracting/compiling translatable string from javascript source",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/flozz/stonejs-tools"
+  },
+  "directories": {
+    "bin": "./bin",
+    "lib": "./src"
+  },
+  "keywords": [
+    "po",
+    "l10n",
+    "localization",
+    "i18n",
+    "internationalization",
+    "json"
+  ],
+  "author": "Fabien LOISON <http://www.flozz.fr/>",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/flozz/stonejs-tools/issues"
+  },
+  "dependencies": {
+    "cli": "^0.8.0",
+    "glob": "^5.0.13"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-yuidoc": "^0.8.0",
+    "grunt-mocha-test": "^0.12.7",
+    "mocha": "^2.2.5"
+  }
+}

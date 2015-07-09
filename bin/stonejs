@@ -1,0 +1,9 @@
+"use strict";
+
+var tools = require("../src");
+var cli = require("cli");
+
+cli.enable("version", "help");
+cli.parse(null, ["extract", "update", "build"]);
+
+// TODO
