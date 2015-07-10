@@ -4,6 +4,11 @@ var tools = require("../src");
 var cli = require("cli");
 
 cli.enable("version", "help");
-cli.parse(null, ["extract", "update", "build"]);
+cli.parse(null, Object.keys(tools));
 
-// TODO
+if (cli.args.length < 2) {
+    cli.error("At least 2 arguments required " + cli.args.length + " given.");
+    process.exit(1);
+}
+
+tools[cli.command](cli.args.slice(0, cli.args.length-1), cli.args[cli.args.length-1], cli.options);

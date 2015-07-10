@@ -1,6 +1,10 @@
 "use strict";
 
 
+var async = require("async");
+var glob = require("glob");
+
+
 /**
  * @class tools
  * @constructor
@@ -23,7 +27,33 @@ var tools = {};
  * @param {Object} options additional options (optional, default: see above)
  */
 tools.extract = function(jsFiles, output, options) {
-    // TODO
+    options = options || {};
+    if (options.functions === undefined) {
+        options.functions = ["_", "gettext", "lazyGettext"];
+    }
+    else if (typeof options.functions == "string") {
+        options.functions = options.functions.split(",");
+    }
+
+    var files = [];
+
+    async.each(jsFiles,
+
+        function(jsFile, callback) {
+           glob(jsFile, {}, function(error, matchingFiles) {
+               files = files.concat(matchingFiles);
+               callback();
+           });
+        },
+
+        function() {
+            // TODO
+            console.log("EXTRACT");
+            console.log("  jsFiles: ", files);
+            console.log("  output: ", output);
+            console.log("  options: ", options);
+        }
+    );
 }
 
 /**
@@ -31,11 +61,28 @@ tools.extract = function(jsFiles, output, options) {
  *
  * @method update
  * @static
- * @param {String} tempate the .pot file
  * @param {Array} poFiles the .po files to update (can contain glob pattern)
+ * @param {String} template the .pot file
  */
-tools.update = function(tempate, poFiles) {
-    // TODO
+tools.update = function(poFiles, template) {
+    var files = [];
+
+    async.each(poFiles,
+
+        function(poFile, callback) {
+           glob(poFile, {}, function(error, matchingFiles) {
+               files = files.concat(matchingFiles);
+               callback();
+           });
+        },
+
+        function() {
+            // TODO
+            console.log("UPDATE");
+            console.log("  poFiles: ", files);
+            console.log("  template: ", template);
+        }
+    );
 }
 
 /**
@@ -45,7 +92,7 @@ tools.update = function(tempate, poFiles) {
  *
  *     {
  *         'merge': false,   // Merge all locales into an unique file
- *         'format': json   // Output format ("json" or "js"/"javascript")
+ *         'format': json    // Output format ("json" or "js"/"javascript")
  *     }
  *
  * @method build
@@ -54,8 +101,30 @@ tools.update = function(tempate, poFiles) {
  * @param {String} output the output folder where compiled files will be created OR output file if the `merge` option is set to `true`
  * @param {Object} options additional options (optional, default: see above)
  */
-tools.build = function(poFiles, output) {
-    // TODO
+tools.build = function(poFiles, output, options) {
+    options = options || {};
+    options.merge = (options.merge === undefined) ? false : !!options.merge;
+    options.format = (["json", "js", "javascript"].indexOf(options.format.toLowerCase()) > -1) ? options.format.toLowerCase() : "json";
+
+    var files = [];
+
+    async.each(poFiles,
+
+        function(poFile, callback) {
+           glob(poFile, {}, function(error, matchingFiles) {
+               files = files.concat(matchingFiles);
+               callback();
+           });
+        },
+
+        function() {
+            // TODO
+            console.log("BUILD");
+            console.log("  poFiles: ", files);
+            console.log("  output: ", output);
+            console.log("  options: ", options);
+        }
+    );
 }
 
 
