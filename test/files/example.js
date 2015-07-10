@@ -32,5 +32,5 @@ _ ( "Spaces everywhere" ) ;
 
 _("Chaîne avec des caractères spéciaux");
 
-_("duplicated straing");
-_("duplicated straing");
+_("duplicated string");
+_("duplicated string");
