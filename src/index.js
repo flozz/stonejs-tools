@@ -54,7 +54,7 @@ tools.extract = function(jsFiles, output, options) {
             console.log("  options: ", options);
         }
     );
-}
+};
 
 /**
  * Update .po files from a .pot .
@@ -83,7 +83,7 @@ tools.update = function(poFiles, template) {
             console.log("  template: ", template);
         }
     );
-}
+};
 
 /**
  * Compile the .po files into a JSON or Javascript file that can be used with Stone.js.
@@ -125,7 +125,7 @@ tools.build = function(poFiles, output, options) {
             console.log("  options: ", options);
         }
     );
-}
+};
 
 
 module.exports = tools;
