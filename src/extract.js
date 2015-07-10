@@ -37,13 +37,14 @@ extract.main = function(jsFiles, output, options) {
     }
 
     var files = [];
+    var strings = {};
 
     async.each(jsFiles,
 
-        function(jsFile, callback) {
+        function(jsFile, doneCb) {
            glob(jsFile, {}, function(error, matchingFiles) {
                files = files.concat(matchingFiles);
-               callback();
+               doneCb();
            });
         },
 
@@ -57,15 +58,27 @@ extract.main = function(jsFiles, output, options) {
 
             async.each(files,
 
-                function(file, callback) {
+                function(file, doneCb) {
                     fs.readFile(file, function(error, data) {
-                        var strings = extract.extractStrings(data.toString(), options.functions);
-                        console.log(strings);  //FIXME
+                        var extractedStrings = extract.extractStrings(data.toString(), options.functions);
+                        for (var str in extractedStrings) {
+                            if (strings[str] === undefined) {
+                                strings[str] = [];
+                            }
+                            for (var i=0 ; i<extractedStrings[str].length ; i++) {
+                                strings[str].push({
+                                    file: file,
+                                    line: extractedStrings[str][i]
+                                });
+                            }
+                        }
+                        doneCb();
                     });
                 },
 
                 function() {
                     // TODO
+                    console.log(strings);  //FIXME
                 }
             );
         }

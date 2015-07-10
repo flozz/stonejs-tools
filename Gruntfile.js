@@ -29,7 +29,7 @@ module.exports = function(grunt) {
         },
 
         jshint: {
-            all: ['src/**/*.js', "bin/*"],
+            all: ['src/**/*.js', 'bin/*', 'test/*Spec.js'],
             options: {
                 futurehostile: true,
                 freeze: true,
@@ -39,7 +39,8 @@ module.exports = function(grunt) {
                 nonbsp: true,
                 nonew: true,
                 undef: true,
-                node: true
+                node: true,
+                mocha: true
             }
         },
 
