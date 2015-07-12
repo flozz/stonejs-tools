@@ -80,8 +80,7 @@ extract.main = function(jsFiles, output, options) {
                 },
 
                 function() {
-                    // TODO
-                    console.log(strings);  //FIXME
+                    fs.writeFile(output, extract.generatePo(strings));
                 }
             );
         }
@@ -102,11 +101,7 @@ extract.extractJsStrings = function(source, functionsNames) {
     var ast = espree.parse(source, {tolerant: true, tokens: true, loc: true});
 
     function _cleanString(str) {
-        var quote = str[0];
-        str = str.slice(1, str.length-1);  // Remove quotes
-        str = (quote == "'") ? str.replace(/\\'/g, "'") : str.replace(/\\"/g, '"');  // Unescape quotes
-        str = str.replace(/\\(\r?\n)/g, "$1");  // Unescape EOL
-        return str;
+        return new Function("return " + str + ";")();  // jshint ignore:line
     }
 
     var f_fn = false;  // In function flag
@@ -134,11 +129,16 @@ extract.extractJsStrings = function(source, functionsNames) {
 
         // functionName (
         else if (f_fn && f_sp) {
-            if (ast.tokens[i].type == "String") {
+            if (ast.tokens[i].type == "String" || ast.tokens[i].type == "Numeric") {
                 buff += _cleanString(ast.tokens[i].value);
             }
             else if (ast.tokens[i].type == "Punctuator" && ast.tokens[i].value == "+") {
                 continue;
+            }
+            else if (ast.tokens[i].type == "Identifier") {
+                buff = "";
+                f_fn = false;
+                f_sp = false;
             }
             else {
                 if (strings[buff] === undefined) {

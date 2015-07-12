@@ -31,6 +31,14 @@ describe("stonejs extract:", function() {
             )).not.to.have.key("hello");
         });
 
+        it("ignore translatable string concatenated with an idenifier", function() {
+            expect(extract.extractJsStrings(
+                "_('hello' + identifier)",
+
+                ["_", "gettext", "lazyGettext"]
+            )).not.to.have.key("hello");
+        });
+
         it("can extract simple translatable string (single quote)", function() {
             expect(extract.extractJsStrings(
                 "_('hello')",
@@ -63,12 +71,84 @@ describe("stonejs extract:", function() {
             )).to.have.key("rock 'n roll");
         });
 
+        it("can extract translatable string with hexadecimal escaped char", function() {
+            expect(extract.extractJsStrings(
+                "_('hello\\x40world')",
+
+                ["_", "gettext", "lazyGettext"]
+            )).to.have.key("hello@world");
+        });
+
+        it("can extract translatable string with octal escaped char", function() {
+            expect(extract.extractJsStrings(
+                "_('hello\\043world')",
+
+                ["_", "gettext", "lazyGettext"]
+            )).to.have.key("hello#world");
+        });
+
         it("can extract concatenated translatable string", function() {
             expect(extract.extractJsStrings(
                 "_('hello ' + 'world')",
 
                 ["_", "gettext", "lazyGettext"]
             )).to.have.key("hello world");
+        });
+
+        it("can extract translatable string concatenated with integer", function() {
+            expect(extract.extractJsStrings(
+                "_('hello ' + 8)",
+
+                ["_", "gettext", "lazyGettext"]
+            )).to.have.key("hello 8");
+
+            expect(extract.extractJsStrings(
+                "_('hello ' + 8.0)",
+
+                ["_", "gettext", "lazyGettext"]
+            )).to.have.key("hello 8");
+
+            expect(extract.extractJsStrings(
+                "_('hello ' + 10e3)",
+
+                ["_", "gettext", "lazyGettext"]
+            )).to.have.key("hello 10000");
+        });
+
+        it("can extract translatable string concatenated with integer (hexa)", function() {
+            expect(extract.extractJsStrings(
+                "_('hello ' + 0xFF)",
+
+                ["_", "gettext", "lazyGettext"]
+            )).to.have.key("hello 255");
+        });
+
+        it("can extract translatable string concatenated with integer (octal)", function() {
+            expect(extract.extractJsStrings(
+                "_('hello ' + 015)",
+
+                ["_", "gettext", "lazyGettext"]
+            )).to.have.key("hello 13");
+        });
+
+        it("can extract translatable string concatenated with float", function() {
+            expect(extract.extractJsStrings(
+                "_('hello ' + 3.14)",
+
+                ["_", "gettext", "lazyGettext"]
+            )).to.have.key("hello 3.14");
+
+            expect(extract.extractJsStrings(
+                "_('hello ' + .3)",
+
+                ["_", "gettext", "lazyGettext"]
+            )).to.have.key("hello 0.3");
+
+            expect(extract.extractJsStrings(
+                "_('hello ' + 10e-3)",
+
+                ["_", "gettext", "lazyGettext"]
+            )).to.have.key("hello 0.01");
         });
 
         it("can extract concatenated translatable string (multilines)", function() {
@@ -89,18 +169,18 @@ describe("stonejs extract:", function() {
 
         it("can extract multiline translatable strings (with escaped \\n)", function() {
             expect(extract.extractJsStrings(
-                "_('hello\\\nworld')",
+                "_('hello \\\nworld')",
 
                 ["_", "gettext", "lazyGettext"]
-            )).to.have.key("hello\nworld");
+            )).to.have.key("hello world");
         });
 
         it("can extract multiline translatable strings (with escaped \\r\\n)", function() {
             expect(extract.extractJsStrings(
-                "_('hello\\\r\nworld')",
+                "_('hello \\\r\nworld')",
 
                 ["_", "gettext", "lazyGettext"]
-            )).to.have.key("hello\r\nworld");
+            )).to.have.key("hello world");
         });
 
         it("can extract translatable strings with replacement", function() {
