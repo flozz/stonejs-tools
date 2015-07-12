@@ -42,7 +42,7 @@ module.exports = function(grunt) {
                 node: true,
                 mocha: true
             }
-        },
+        }
 
     });
 

@@ -15,11 +15,13 @@
     "lib": "./src"
   },
   "keywords": [
-    "po",
-    "l10n",
-    "localization",
-    "i18n",
     "internationalization",
+    "i18n",
+    "localization",
+    "l10n",
+    "po",
+    "translation",
+    "gettext",
     "json"
   ],
   "author": "Fabien LOISON <http://www.flozz.fr/>",
@@ -31,6 +33,7 @@
     "async": "^1.3.0",
     "cli": "^0.8.0",
     "espree": "^2.0.4",
+    "gettext-parser": "^1.1.1",
     "glob": "^5.0.13"
   },
   "devDependencies": {

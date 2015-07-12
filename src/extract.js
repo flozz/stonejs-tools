@@ -4,6 +4,9 @@ var async = require("async");
 var glob = require("glob");
 var fs = require("fs");
 var espree = require("espree");
+var gettextParser = require("gettext-parser");
+
+var helpers = require("./helpers.js");
 
 
 /**
@@ -60,7 +63,7 @@ extract.main = function(jsFiles, output, options) {
 
                 function(file, doneCb) {
                     fs.readFile(file, function(error, data) {
-                        var extractedStrings = extract.extractStrings(data.toString(), options.functions);
+                        var extractedStrings = extract.extractJsStrings(data.toString(), options.functions);
                         for (var str in extractedStrings) {
                             if (strings[str] === undefined) {
                                 strings[str] = [];
@@ -88,13 +91,13 @@ extract.main = function(jsFiles, output, options) {
 /**
  * Extracts strings from the given Javascript source code.
  *
- * @method extractStrings
+ * @method extractJsStrings
  * @static
  * @param {String} source The Javascript source code.
  * @param {Array} functionsNames The name of th etranslation functions to search in the source.
  * @return {Object} Translatable strings `{ <string>: [<lines>] }`.
  */
-extract.extractStrings = function(source, functionsNames) {
+extract.extractJsStrings = function(source, functionsNames) {
     var strings = {};
     var ast = espree.parse(source, {tolerant: true, tokens: true, loc: true});
 
@@ -152,6 +155,66 @@ extract.extractStrings = function(source, functionsNames) {
 
     return strings;
 };
+
+/**
+ * Generates the .po file.
+ *
+ * @method generatePo
+ * @static
+ * @param {Object} strings the strings `{ "<msgid>": [{file: String, line: Number}] }`.
+ * @return {String} the generated po file.
+ */
+extract.generatePo = function(strings) {
+
+    function _buildRef(refs) {
+        var result = "";
+        for (var i=0 ; i<refs.length ; i++) {
+            if (i > 0) result += "\n";
+            result += refs[i].file + ":" + refs[i].line;
+        }
+        return result;
+    }
+
+    var date = new Date();
+    var data = {
+        "charset": "UTF-8",
+
+        headers: {
+            "mime-version": "1.0",
+            "content-type": "text/plain; charset=UTF-8",
+            "content-transfer-encoding": "8bit",
+            "pot-creation-date": helpers.dateFormat(date),
+            "po-revision-date": helpers.dateFormat(date),
+            "language": "C",
+            "plural-forms": "nplurals=2; plural=(n > 1);"
+        },
+
+        translations: {
+            "": {
+                // "<msgid>" {
+                //     msgid: "<msgid>",
+                //     msgstr: ["<msgstr>"],
+                //     comments: {
+                //         reference: "<ref1>\n<ref2>"
+                //     }
+                // }
+            }
+        }
+    };
+
+    for (var msgid in strings) {
+        data.translations[""][msgid] = {
+            msgid: msgid,
+            msgstr: "",
+            comments: {
+                reference: _buildRef(strings[msgid])
+            }
+        };
+    }
+
+    return gettextParser.po.compile(data).toString();
+};
+
 
 
 module.exports = extract;

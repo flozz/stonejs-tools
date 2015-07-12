@@ -1,6 +1,9 @@
-var tools = require("../src");
+var expect = require("expect.js");
 
-describe("stonejs build", function() {
+var tools = require("../src/build.js");
+
+
+describe("stonejs build:", function() {
 
     // TODO
 
