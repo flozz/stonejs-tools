@@ -35,9 +35,14 @@ helpers.dateFormat = function(date) {
     result += ":";
     result += (date.getSeconds() < 10) ? "0" + date.getSeconds() : date.getSeconds();
 
-    result += (date.getTimezoneOffset() > 0) ? "-" : "+";
-    result += (Math.abs(date.getTimezoneOffset()) / 60 | 0 < 10) ? "0" : "";
-    result += Math.abs((date.getTimezoneOffset() / 60 | 0) * 100 + (date.getTimezoneOffset() % 60));
+    if (date.getTimezoneOffset() === 0) {
+        result += "+0000";
+    }
+    else {
+        result += (date.getTimezoneOffset() > 0) ? "-" : "+";
+        result += (Math.abs(date.getTimezoneOffset()) / 60 | 0 < 10) ? "0" : "";
+        result += Math.abs((date.getTimezoneOffset() / 60 | 0) * 100 + (date.getTimezoneOffset() % 60));
+    }
     return result;
 };
 
