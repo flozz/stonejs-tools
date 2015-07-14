@@ -1,3 +1,5 @@
+var fs = require("fs");
+
 var expect = require("expect.js");
 
 var extract = require("../src/extract.js");
@@ -241,6 +243,28 @@ describe("stonejs extract:", function() {
                 .and.to.contain('msgid "world"');
         });
 
+    });
+
+    describe("extract.main", function() {
+
+        var outputFile = "__test_output.pot";
+
+        after(function(done) {
+            fs.exists(outputFile, function(exists) {
+                if (exists) fs.unlink(outputFile, done);
+                else done();
+            });
+        });
+
+        it("extracts strings from js files and generates the po template file", function(done) {
+            extract.main(["test/fixtures/*.js"], outputFile, {}, function(error) {
+                if (!error) {
+                    fs.exists(outputFile, function(exists) {
+                        if (exists) done();
+                    });
+                }
+            });
+        });
     });
 
 });

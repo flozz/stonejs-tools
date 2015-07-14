@@ -15,7 +15,7 @@ _("nope 6" + identifier);
 _("translatable 1");
 _('translatable 2');
 _ ( 
-   "translatable 3
+   "translatable 3"
 );
 foo._("translatable 4");
 

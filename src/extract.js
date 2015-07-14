@@ -29,8 +29,9 @@ var extract = {};
  * @param {Array} jsFiles list of js files to parse (can contain glob pattern)
  * @param {String} output the output file (.pot)
  * @param {Object} options additional options (optional, default: see above)
+ * @param {Function} callback function called when everything is done (optional)
  */
-extract.main = function(jsFiles, output, options) {
+extract.main = function(jsFiles, output, options, callback) {
     options = options || {};
     if (options.functions === undefined) {
         options.functions = ["_", "gettext", "lazyGettext"];
@@ -38,6 +39,7 @@ extract.main = function(jsFiles, output, options) {
     else if (typeof options.functions == "string") {
         options.functions = options.functions.split(",");
     }
+    callback = callback || function(){};
 
     var files = [];
     var strings = {};
@@ -80,7 +82,7 @@ extract.main = function(jsFiles, output, options) {
                 },
 
                 function() {
-                    fs.writeFile(output, extract.generatePo(strings));
+                    fs.writeFile(output, extract.generatePo(strings), callback);
                 }
             );
         }
