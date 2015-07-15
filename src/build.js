@@ -1,6 +1,7 @@
 "use strict";
 
 var fs = require("fs");
+var path = require("path");
 
 var async = require("async");
 var glob = require("glob");
@@ -37,15 +38,43 @@ build.main = function(poFiles, output, options, callback) {
     options = options || {};
     options.merge = (options.merge === undefined) ? false : !!options.merge;
     options.format = (options.format !== undefined && ["json", "js", "javascript"].indexOf(options.format.toLowerCase()) > -1) ? options.format.toLowerCase() : "json";
+    if (options.format == "javascript") options.format = "js";
 
-    if (options.merge && fs.statSync(output).isDirectory()) {
+    if (options.merge && helpers.isDir(output)) {
         helpers.error("You requested a merged output file but '" + output + "' is a directory.");
         process.exit(1);
     }
-    else if (!options.merge && !fs.statSync(output).isDirectory()) {
+    else if (!options.merge && !helpers.isDir(output)) {
         helpers.error(output + "' is not a directory.");
         process.exit(1);
     }
+
+    var formats = {
+        json: JSON.stringify,
+        js: function(data) {
+            var result = "";
+            result += "(function(window, undefined) {\n";
+            result += "    function _sendEvent(name, data) {\n";
+            result += "        var data = data || {};\n";
+            result += "        var ev = null;\n";
+            result += "        try {\n";
+            result += "            ev = new Event(name);\n";
+            result += "        }\n";
+            result += "        catch (e) {\n";
+            result += "            ev = document.createEvent(\"Event\");\n";
+            result += "            ev.initEvent(name, true, false);\n";
+            result += "        }\n";
+            result += "        for (var i in data) {\n";
+            result += "            ev[i] = data[i];\n";
+            result += "        }\n";
+            result += "        document.dispatchEvent(ev);\n";
+            result += "    }\n";
+            result += "    var catalog = " + JSON.stringify(data) + ";\n";
+            result += "    _sendEvent(\"stonejs-autoload-catalogs\", {catalog: catalog});\n";
+            result += "}(window));\n";
+            return result;
+        }
+    };
 
     var files = [];
     var catalogs = {};
@@ -60,7 +89,7 @@ build.main = function(poFiles, output, options, callback) {
         },
 
         function() {
-            var poData, catalog, lang;
+            var poData, catalog, lang, result, fileName;
             for (var i=0 ; i<files.length ; i++) {
                 helpers.log("  * Building '" + files[i] + "'", options);
                 poData = fs.readFileSync(files[i]);
@@ -73,7 +102,22 @@ build.main = function(poFiles, output, options, callback) {
                     catalogs[lang] = catalog[lang];
                 }
             }
-            console.log(catalogs);  // FIXME
+            if (options.merge) {
+                result = formats[options.format](catalogs);
+                fs.writeFileSync(output, result);
+                helpers.ok("Translation built: " + output, options);
+            }
+            else {
+                for (lang in catalogs) {
+                    fileName = path.join(output, lang + "." + options.format);
+                    catalog = {};
+                    catalog[lang] = catalogs[lang];
+                    result = formats[options.format](catalog);
+                    fs.writeFileSync(fileName, result);
+                    helpers.log ("  * writing '" + fileName + "'", options);
+                }
+                helpers.ok("All translation built.", options);
+            }
             callback();
         }
     );

@@ -1,5 +1,6 @@
 "use strict";
 
+var fs = require("fs");
 
 var cli = require("cli");
 
@@ -47,6 +48,42 @@ helpers.dateFormat = function(date) {
         result += Math.abs((date.getTimezoneOffset() / 60 | 0) * 100 + (date.getTimezoneOffset() % 60));
     }
     return result;
+};
+
+/**
+ * Check if a file exists or not.
+ *
+ * @method isFile
+ * @static
+ * @param {String} path
+ * @return {Boolean}
+ */
+helpers.isFile = function(path) {
+    try {
+        var stat = fs.statSync(path);
+        return stat.isFile();
+    }
+    catch (e) {
+        return false;
+    }
+};
+
+/**
+ * Check if a directory exists or not.
+ *
+ * @method isDir
+ * @static
+ * @param {String} path
+ * @return {Boolean}
+ */
+helpers.isDir = function(path) {
+    try {
+        var stat = fs.statSync(path);
+        return stat.isDirectory();
+    }
+    catch (e) {
+        return false;
+    }
 };
 
 /**

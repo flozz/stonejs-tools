@@ -36,5 +36,68 @@ describe("stonejs build:", function() {
 
     });
 
+    describe("build.main", function() {
+        var poFiles = [
+            "test/fixtures/gettext-fr.po",
+            "test/fixtures/gettext-it.po"
+        ];
+
+        before(function() {
+            for (var i=0 ; i<poFiles.length ; i++) {
+                fs.writeFileSync("__test_po_" + i + ".po", fs.readFileSync(poFiles[i]));
+            }
+        });
+
+        after(function() {
+            for (var i=0 ; i<poFiles.length ; i++) {
+                fs.unlinkSync("__test_po_" + i + ".po");
+            }
+        });
+
+        it("generates separated json files", function(done) {
+            build.main(["__test_po_*.po"], "./", {quiet: true, merge: false, format: "json"}, function() {
+                expect(fs.statSync("fr.json").isFile()).to.be.ok();
+                expect(fs.statSync("it.json").isFile()).to.be.ok();
+
+                fs.unlinkSync("fr.json");
+                fs.unlinkSync("it.json");
+
+                done();
+            });
+        });
+
+        it("generates separated javascript files", function(done) {
+            build.main(["__test_po_*.po"], "./", {quiet: true, merge: false, format: "javascript"}, function() {
+                expect(fs.statSync("fr.js").isFile()).to.be.ok();
+                expect(fs.statSync("it.js").isFile()).to.be.ok();
+
+                fs.unlinkSync("fr.js");
+                fs.unlinkSync("it.js");
+
+                done();
+            });
+        });
+
+        it("generates merged json file", function(done) {
+            build.main(["__test_po_*.po"], "__test_catalog.json", {quiet: true, merge: true, format: "json"}, function() {
+                expect(fs.statSync("__test_catalog.json").isFile()).to.be.ok();
+
+                fs.unlinkSync("__test_catalog.json");
+
+                done();
+            });
+        });
+
+        it("generates merged javascript file", function(done) {
+            build.main(["__test_po_*.po"], "__test_catalog.js", {quiet: true, merge: true, format: "jsavascript"}, function() {
+                expect(fs.statSync("__test_catalog.js").isFile()).to.be.ok();
+
+                fs.unlinkSync("__test_catalog.js");
+
+                done();
+            });
+        });
+    });
+
 });
 
