@@ -5,8 +5,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2015-07-15 13:38:39+0200\n"
 "PO-Revision-Date: 2015-07-15 13:40+0100\n"
-"Language: fr\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Language: it\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "Project-Id-Version: \n"
 "Last-Translator: Fabien LOISON\n"
 "Language-Team: \n"
@@ -14,23 +14,23 @@ msgstr ""
 
 #: test/fixtures/gettext.js:15
 msgid "translatable 1"
-msgstr "traductible 1"
+msgstr "traducibile 1"
 
 #: test/fixtures/gettext.js:16
 msgid "translatable 2"
-msgstr "traductible 2"
+msgstr "traducibile 2"
 
 #: test/fixtures/gettext.js:19
 msgid "translatable 3"
-msgstr "traductible 3"
+msgstr "traducibile 3"
 
 #: test/fixtures/gettext.js:20
 msgid "translatable 4"
-msgstr "traductible 4"
+msgstr "traducibile 4"
 
 #: test/fixtures/gettext.js:1337
 msgid "removed 1"
-msgstr "supprimé 1"
+msgstr "rimosso 1"
 
 #~ msgid "removed 2"
-#~ msgstr "supprimé 2"
+#~ msgstr "rimosso 2"

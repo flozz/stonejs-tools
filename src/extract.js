@@ -197,7 +197,7 @@ extract.generatePo = function(strings) {
             "pot-creation-date": helpers.dateFormat(date),
             "po-revision-date": helpers.dateFormat(date),
             "language": "C",
-            "plural-forms": "nplurals=2; plural=(n > 1);"
+            "plural-forms": "nplurals=2; plural=(n != 1);"
         },
 
         translations: {

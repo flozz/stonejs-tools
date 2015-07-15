@@ -38,8 +38,8 @@ update.main = function(poFiles, template, options, callback) {
     var files = [];
 
     if (!fs.statSync(template).isFile()) {
-        helpers.error("The given translation template does not exist: " + template);
-        return;
+        helpers.error("The translation template does not exist: " + template);
+        process.exit(1);
     }
 
     var potData = fs.readFileSync(template);

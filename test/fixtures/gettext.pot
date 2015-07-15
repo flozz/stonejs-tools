@@ -6,7 +6,7 @@ msgstr ""
 "POT-Creation-Date: 2015-07-15 13:38:39+0200\n"
 "PO-Revision-Date: 2015-07-15 13:38:39+0200\n"
 "Language: C\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: test/fixtures/gettext.js:15
 msgid "translatable 1"
