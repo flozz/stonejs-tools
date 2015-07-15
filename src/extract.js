@@ -54,17 +54,16 @@ extract.main = function(jsFiles, output, options, callback) {
         },
 
         function() {
-            // TODO
-            console.log("EXTRACT");
-            console.log("  jsFiles: ", files);
-            console.log("  output: ", output);
-            console.log("  options: ", options);
-            console.log("============================");
-
             async.each(files,
 
                 function(file, doneCb) {
+                    helpers.log("  * Extracting strings from '" + file + "'", options);
                     fs.readFile(file, function(error, data) {
+                        if (!data) {
+                            helpers.warn("    /!\\ Skipped!", options);
+                            doneCb();
+                            return;
+                        }
                         var extractedStrings = extract.extractJsStrings(data.toString(), options.functions);
                         for (var str in extractedStrings) {
                             if (strings[str] === undefined) {
@@ -82,7 +81,15 @@ extract.main = function(jsFiles, output, options, callback) {
                 },
 
                 function() {
-                    fs.writeFile(output, extract.generatePo(strings), callback);
+                    fs.writeFile(output, extract.generatePo(strings), function(error) {
+                        if (error) {
+                            helpers.error("An error occurred: " + error, options);
+                        }
+                        else {
+                            helpers.ok("Translation template written: " + output, options);
+                        }
+                        callback(error);
+                    });
                 }
             );
         }
@@ -216,7 +223,6 @@ extract.generatePo = function(strings) {
 
     return gettextParser.po.compile(data).toString();
 };
-
 
 
 module.exports = extract;

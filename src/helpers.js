@@ -1,6 +1,9 @@
 "use strict";
 
 
+var cli = require("cli");
+
+
 /**
  * @class helpers
  * @constructor
@@ -44,6 +47,66 @@ helpers.dateFormat = function(date) {
         result += Math.abs((date.getTimezoneOffset() / 60 | 0) * 100 + (date.getTimezoneOffset() % 60));
     }
     return result;
+};
+
+/**
+ * Output a message to the console if not in quiet mode.
+ *
+ * @method log
+ * @static
+ * @param {String} message the message to write
+ * @param {Object} options the options passed to the program
+ */
+helpers.log = function(message, options) {
+    if (options.quiet || options.q) {
+        return;
+    }
+    console.log(message);
+};
+
+/**
+ * Output a warning message to the console if not in quiet mode.
+ *
+ * @method warn
+ * @static
+ * @param {String} message the message to write
+ * @param {Object} options the options passed to the program
+ */
+helpers.warn = function(message, options) {
+    if (options.quiet || options.q) {
+        return;
+    }
+    console.warn(message);
+};
+
+/**
+ * Output an error message to the console if not in quiet mode.
+ *
+ * @method error
+ * @static
+ * @param {String} message the message to write
+ * @param {Object} options the options passed to the program
+ */
+helpers.error = function(message, options) {
+    if (options.quiet || options.q) {
+        return;
+    }
+    cli.error(message);
+};
+
+/**
+ * Output an error message to the console if not in quiet mode.
+ *
+ * @method ok
+ * @static
+ * @param {String} message the message to write
+ * @param {Object} options the options passed to the program
+ */
+helpers.ok = function(message, options) {
+    if (options.quiet || options.q) {
+        return;
+    }
+    cli.ok(message);
 };
 
 

@@ -257,7 +257,7 @@ describe("stonejs extract:", function() {
         });
 
         it("extracts strings from js files and generates the po template file", function(done) {
-            extract.main(["test/fixtures/*.js"], outputFile, {}, function(error) {
+            extract.main(["test/fixtures/*.js"], outputFile, {quiet: true}, function(error) {
                 if (!error) {
                     fs.exists(outputFile, function(exists) {
                         if (exists) done();
