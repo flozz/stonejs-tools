@@ -1,8 +1,9 @@
 "use strict";
 
+var fs = require("fs");
+
 var async = require("async");
 var glob = require("glob");
-var fs = require("fs");
 var espree = require("espree");
 var gettextParser = require("gettext-parser");
 
@@ -21,7 +22,8 @@ var extract = {};
  * options:
  *
  *     {
- *         'functions': ["_", "gettext", "lazyGettext"]   // The name of the gettext functions
+ *         'functions': ["_", "gettext", "lazyGettext"],   // The name of the gettext functions
+ *         'quiet': false   // If true: do not output logs
  *     }
  *
  * @method main
@@ -186,11 +188,11 @@ extract.generatePo = function(strings) {
 
     var date = new Date();
     var data = {
-        "charset": "UTF-8",
+        "charset": "utf-8",
 
         headers: {
             "mime-version": "1.0",
-            "content-type": "text/plain; charset=UTF-8",
+            "content-type": "text/plain; charset=utf-8",
             "content-transfer-encoding": "8bit",
             "pot-creation-date": helpers.dateFormat(date),
             "po-revision-date": helpers.dateFormat(date),

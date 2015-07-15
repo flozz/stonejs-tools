@@ -50,8 +50,8 @@ _(
 
 _("escaped \" 1");
 _('escaped \' 2');
-_("escpaed \\ 3");
-_("escpaed \t 4");
+_("escaped \\ 3");
+_("escaped \t 4");
 _("escaped \n 5");
 _(
 "escaped \

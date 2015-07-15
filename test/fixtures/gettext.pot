@@ -1,0 +1,124 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2015-07-15 13:38:39+0200\n"
+"PO-Revision-Date: 2015-07-15 13:38:39+0200\n"
+"Language: C\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: test/fixtures/gettext.js:15
+msgid "translatable 1"
+msgstr ""
+
+#: test/fixtures/gettext.js:16
+msgid "translatable 2"
+msgstr ""
+
+#: test/fixtures/gettext.js:19
+msgid "translatable 3"
+msgstr ""
+
+#: test/fixtures/gettext.js:20
+msgid "translatable 4"
+msgstr ""
+
+#: test/fixtures/gettext.js:22
+msgid "translatable 5"
+msgstr ""
+
+#: test/fixtures/gettext.js:23
+msgid "translatable 6"
+msgstr ""
+
+#: test/fixtures/gettext.js:24
+msgid "translatable 7"
+msgstr ""
+
+#: test/fixtures/gettext.js:25
+msgid "translatable 8"
+msgstr ""
+
+#: test/fixtures/gettext.js:27
+msgid "translatable 9"
+msgstr ""
+
+#: test/fixtures/gettext.js:28
+msgid "translatable 10"
+msgstr ""
+
+#: test/fixtures/gettext.js:29
+msgid "translatable 11"
+msgstr ""
+
+#: test/fixtures/gettext.js:30
+msgid "translatable 12"
+msgstr ""
+
+#: test/fixtures/gettext.js:31
+msgid "translatable 13"
+msgstr ""
+
+#: test/fixtures/gettext.js:32
+msgid "translatable 14"
+msgstr ""
+
+#: test/fixtures/gettext.js:33
+msgid "translatable 15"
+msgstr ""
+
+#: test/fixtures/gettext.js:34
+msgid "translatable 16"
+msgstr ""
+
+#: test/fixtures/gettext.js:39
+msgid "translatable 17"
+msgstr ""
+
+#: test/fixtures/gettext.js:46
+msgid "translatable 18"
+msgstr ""
+
+#: test/fixtures/gettext.js:51
+msgid "escaped \" 1"
+msgstr ""
+
+#: test/fixtures/gettext.js:52
+msgid "escaped ' 2"
+msgstr ""
+
+#: test/fixtures/gettext.js:53
+msgid "escaped \\ 3"
+msgstr ""
+
+#: test/fixtures/gettext.js:54
+msgid "escaped \t 4"
+msgstr ""
+
+#: test/fixtures/gettext.js:55
+msgid ""
+"escaped \n"
+" 5"
+msgstr ""
+
+#: test/fixtures/gettext.js:59
+msgid "escaped 6"
+msgstr ""
+
+#: test/fixtures/gettext.js:60
+msgid "escaped @ 7"
+msgstr ""
+
+#: test/fixtures/gettext.js:61
+msgid "escaped # 7"
+msgstr ""
+
+#: test/fixtures/gettext.js:66
+msgid "special 1 «↑éÉ☺»"
+msgstr ""
+
+#: test/fixtures/gettext.js:71
+#: test/fixtures/gettext.js:72
+msgid "duplicated"
+msgstr ""
