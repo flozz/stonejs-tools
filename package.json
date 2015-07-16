@@ -1,7 +1,7 @@
 {
   "name": "stonejs-tools",
   "version": "0.0.0",
-  "description": "Tools for extracting/compiling translatable string from javascript source",
+  "description": "Tools for extracting/compiling translatable string from Javascript/HTML source",
   "main": "src/index.js",
   "scripts": {
     "test": "grunt test"
