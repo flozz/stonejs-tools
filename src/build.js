@@ -39,6 +39,7 @@ build.main = function(poFiles, output, options, callback) {
     options.merge = (options.merge === undefined) ? false : !!options.merge;
     options.format = (options.format !== undefined && ["json", "js", "javascript"].indexOf(options.format.toLowerCase()) > -1) ? options.format.toLowerCase() : "json";
     if (options.format == "javascript") options.format = "js";
+    callback = callback || function(){};
 
     if (options.merge && helpers.isDir(output)) {
         helpers.error("You requested a merged output file but '" + output + "' is a directory.");
@@ -81,10 +82,10 @@ build.main = function(poFiles, output, options, callback) {
 
     async.each(poFiles,
 
-        function(poFile, callback) {
+        function(poFile, doneCb) {
            glob(poFile, {}, function(error, matchingFiles) {
                files = files.concat(matchingFiles);
-               callback();
+               doneCb();
            });
         },
 
