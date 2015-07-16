@@ -6,6 +6,7 @@ var async = require("async");
 var glob = require("glob");
 var espree = require("espree");
 var gettextParser = require("gettext-parser");
+var cheerio = require("cheerio");
 
 var helpers = require("./helpers.js");
 
@@ -66,7 +67,15 @@ extract.main = function(jsFiles, output, options, callback) {
                             doneCb();
                             return;
                         }
-                        var extractedStrings = extract.extractJsStrings(data.toString(), options.functions);
+                        var extractedStrings = "";
+                        var ext = file.toLowerCase().split(".");
+                        ext = ext[ext.length-1];
+                        if (["html", "htm", "xhtml", "xml"].indexOf(ext) >= 0) {
+                            extractedStrings = extract.extractHtmlStrings(data.toString());
+                        }
+                        else {
+                            extractedStrings = extract.extractJsStrings(data.toString(), options.functions);
+                        }
                         for (var str in extractedStrings) {
                             if (strings[str] === undefined) {
                                 strings[str] = [];
@@ -165,6 +174,25 @@ extract.extractJsStrings = function(source, functionsNames) {
     }
 
     return strings;
+};
+
+/**
+ * Extracts strings from the given HTML.
+ *
+ * @method extractHtmlStrings
+ * @static
+ * @param {String} source The HTML source code.
+ * @return {Object} Translatable strings `{ <string>: [<lines>] }`.
+ */
+extract.extractHtmlStrings = function(source) {
+    var $ = cheerio.load(source);
+    var nodes = $("[stonejs]");
+    var result = {};
+    //console.log(nodes("[stonejs]"));
+    nodes.each(function(node) {
+        result[$(nodes[node]).html()] = [0];
+    });
+    return result;
 };
 
 /**

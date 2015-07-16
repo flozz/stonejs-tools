@@ -3,13 +3,14 @@ var fs = require("fs");
 var expect = require("expect.js");
 
 var extract = require("../src/extract.js");
+var helpers = require("../src/helpers.js");
 
 
 describe("stonejs extract:", function() {
 
     describe("extract.extractJsStrings", function() {
 
-        it("do not extract not translatable strings", function() {
+        it("does not extract not translatable strings", function() {
             expect(extract.extractJsStrings(
                 "'hello';\nfoo('hello');bar_(\"hello\")",
 
@@ -17,7 +18,7 @@ describe("stonejs extract:", function() {
             )).not.to.have.key("hello");
         });
 
-        it("do not extract commented translatable strings (// comment)", function() {
+        it("does not extract commented translatable strings (// comment)", function() {
             expect(extract.extractJsStrings(
                 "// _('hello')",
 
@@ -25,7 +26,7 @@ describe("stonejs extract:", function() {
             )).not.to.have.key("hello");
         });
 
-        it("do not extract commented translatable strings (/* comment */)", function() {
+        it("does not extract commented translatable strings (/* comment */)", function() {
             expect(extract.extractJsStrings(
                 "/*\n * _('hello')\n */",
 
@@ -227,6 +228,22 @@ describe("stonejs extract:", function() {
 
     });
 
+    describe("extract.extractHtmlStrings", function() {
+
+        it("does not extract not translatable strings", function() {
+            expect(extract.extractHtmlStrings("<html><head></head><body><div>hello</div></body></html>")).not.to.have.key("hello");
+        });
+
+        it("can extract translatable strings", function() {
+            expect(extract.extractHtmlStrings("<html><head></head><body><div stonejs>hello</div></body></html>")).to.have.key("hello");
+        });
+
+        it("can extract translatable strings (with HTML tags)", function() {
+            expect(extract.extractHtmlStrings("<html><head></head><body><div stonejs><em>hello</em></div></body></html>")).to.have.key("<em>hello</em>");
+        });
+
+    });
+
     describe("extract.generatePo", function() {
 
         var strings = {
@@ -249,20 +266,49 @@ describe("stonejs extract:", function() {
 
         var outputFile = "__test_output.pot";
 
-        after(function(done) {
-            fs.exists(outputFile, function(exists) {
-                if (exists) fs.unlink(outputFile, done);
-                else done();
-            });
+        after(function() {
+            if (helpers.isFile(outputFile)) {
+                fs.unlinkSync(outputFile);
+            }
         });
 
         it("extracts strings from js files and generates the po template file", function(done) {
-            extract.main(["test/fixtures/*.js"], outputFile, {quiet: true}, function(error) {
-                if (!error) {
-                    fs.exists(outputFile, function(exists) {
-                        if (exists) done();
-                    });
-                }
+            extract.main(["test/fixtures/*.js", "test/fixtures/*.html"], outputFile, {quiet: true}, function(error) {
+                expect(error).not.to.be.ok();
+                expect(helpers.isFile(outputFile)).to.be.ok();
+                expect(fs.readFileSync(outputFile).toString())
+                    .not.to.contain("nope")
+                    .and.to.contain("translatable 1")
+                    .and.to.contain("translatable 2")
+                    .and.to.contain("translatable 3")
+                    .and.to.contain("translatable 4")
+                    .and.to.contain("translatable 5")
+                    .and.to.contain("translatable 6")
+                    .and.to.contain("translatable 7")
+                    .and.to.contain("translatable 8")
+                    .and.to.contain("translatable 9")
+                    .and.to.contain("translatable 10")
+                    .and.to.contain("translatable 11")
+                    .and.to.contain("translatable 12")
+                    .and.to.contain("translatable 13")
+                    .and.to.contain("translatable 14")
+                    .and.to.contain("translatable 15")
+                    .and.to.contain("translatable 16")
+                    .and.to.contain("translatable 17")
+                    .and.to.contain("translatable 18")
+                    .and.to.contain("escaped \\\" 1")
+                    .and.to.contain("escaped ' 2")
+                    .and.to.contain("escaped \\\\ 3")
+                    .and.to.contain("escaped \\t 4")
+                    .and.to.contain("escaped \\n")
+                    .and.to.contain("escaped 6")
+                    .and.to.contain("escaped @ 7")
+                    .and.to.contain("escaped # 8")
+                    .and.to.contain("special 1 «↑éÉ☺»")
+                    .and.to.contain("duplicated")
+                    .and.to.contain("html translatable 1")
+                    .and.to.contain("html translatable <em>2</em>");
+                done();
             });
         });
     });

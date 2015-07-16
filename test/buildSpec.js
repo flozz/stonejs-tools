@@ -19,7 +19,6 @@ describe("stonejs build:", function() {
             var catalogs = build.poToJson(poData);
             expect(catalogs.fr).to.have.key("plural-forms");
             expect(catalogs.fr["plural-forms"]).to.match(/^\s*nplurals\s*=\s*[0-9]+\s*;\s*plural\s*=\s*.+;\s*/);
-            console.log(catalogs);
         });
 
         it("has the messages", function() {
