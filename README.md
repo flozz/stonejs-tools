@@ -5,19 +5,19 @@
 [ ![License](http://img.shields.io/npm/l/stonejs-tools.svg?style=flat) ](https://www.npmjs.com/package/stonejs-tools)
 
 
-Tools for extracting/compiling translatable string from Javascript/HTML source.
+Tools for extracting/compiling translatable strings from Javascript/HTML sources.
 
 
 ## Getting Started
 
-To start using Stone.js tools, you first have to install them **globally**:
+To start using the Stone.js tools, you first have to install them **globally**:
 
     npm install -g stonejs-tools
 
 
 ## Internationalization
 
-See the Stone.js documentation to know how internationalize your application:
+See the Stone.js documentation to learn how to internationalize your application:
 
 * https://github.com/flozz/stone.js
 
@@ -28,7 +28,7 @@ To extract translatable strings from your Javascript and HTML sources, you shoul
 
     stonejs extract [options] <source js/html> <output pot>
 
-* `<source js/html>`: all Javascript and HTML files where translatable string will be extracted (globbing allowed)
+* `<source js/html>`: all Javascript and HTML files from which translatable string will be extracted (globbing allowed)
 * `<output pot>: the output translation template (`.pot`)
 
 The available options are:
@@ -65,7 +65,7 @@ Then edit it:
 
 ## Updating Translations
 
-When you already translated your app but you have new string to translate, you can update your `.po` files to add the new strings to them.
+If you have already translated your app but you have new strings to translate, you can update your `.po` files to add the new strings to them.
 
 First, extract again your translatable strings to recreate the translation template file (`.pot`) with the `stonejs extract` command (see above).
 
@@ -92,7 +92,7 @@ To be used by Stone.js, your translation must be built into one ore more JSON or
     stonejs build [options] <po files> <output>
 
 * `<po files>`: translation files (`.po`) to build (globbing allowed)
-* `<output>`: The output directory where build files will be created (or **ouput file** if you used the `--merge` option)
+* `<output>`: The output directory where built files will be created (or **output file** if you used the `--merge` option)
 
 The available options are:
 
