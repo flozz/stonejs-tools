@@ -46,6 +46,7 @@ extract.main = function(jsFiles, output, options, callback) {
 
     var files = [];
     var strings = {};
+    var skipped = 0;
 
     async.each(jsFiles,
 
@@ -60,38 +61,52 @@ extract.main = function(jsFiles, output, options, callback) {
             async.each(files,
 
                 function(file, doneCb) {
+                    if (!helpers.isFile(file)) {
+                        if (!helpers.isDir(file)) {
+                            helpers.warn("File not found: " + file, options);
+                            skipped += 1;
+                        }
+                        doneCb();
+                        return;
+                    }
                     helpers.log("  * Extracting strings from '" + file + "'", options);
-                    fs.readFile(file, function(error, data) {
-                        if (!data) {
-                            helpers.warn("    /!\\ Skipped!", options);
+                    var data = fs.readFileSync(file);
+                    var extractedStrings = {};
+                    var ext = file.toLowerCase().split(".");
+                    ext = ext[ext.length-1];
+                    if (["html", "htm", "xhtml", "xml"].indexOf(ext) >= 0) {
+                        extractedStrings = extract.extractHtmlStrings(data.toString());
+                    }
+                    else {
+                        try {
+                            extractedStrings = extract.extractJsStrings(data.toString(), options.functions);
+                        } catch (error) {
+                            helpers.warn(error.toString(), options);
+                            helpers.warn("File skipped due to syntax errors", options);
+                            skipped += 1;
                             doneCb();
                             return;
                         }
-                        var extractedStrings = "";
-                        var ext = file.toLowerCase().split(".");
-                        ext = ext[ext.length-1];
-                        if (["html", "htm", "xhtml", "xml"].indexOf(ext) >= 0) {
-                            extractedStrings = extract.extractHtmlStrings(data.toString());
+                    }
+                    for (var str in extractedStrings) {
+                        if (strings[str] === undefined) {
+                            strings[str] = [];
                         }
-                        else {
-                            extractedStrings = extract.extractJsStrings(data.toString(), options.functions);
+                        for (var i=0 ; i<extractedStrings[str].length ; i++) {
+                            strings[str].push({
+                                file: file,
+                                line: extractedStrings[str][i]
+                            });
                         }
-                        for (var str in extractedStrings) {
-                            if (strings[str] === undefined) {
-                                strings[str] = [];
-                            }
-                            for (var i=0 ; i<extractedStrings[str].length ; i++) {
-                                strings[str].push({
-                                    file: file,
-                                    line: extractedStrings[str][i]
-                                });
-                            }
-                        }
-                        doneCb();
-                    });
+                    }
+                    doneCb();
                 },
 
                 function() {
+                    helpers.log(
+                        "\n\x1B[1;36m" + Object.keys(strings).length + "\x1B[0m string(s) extracted" +
+                        ((skipped > 0) ? ", \x1B[1;31m" + skipped + "\x1B[0m file(s) skipped." : "."),
+                        options);
                     fs.writeFile(output, extract.generatePo(strings), function(error) {
                         if (error) {
                             helpers.error("An error occurred: " + error, options);

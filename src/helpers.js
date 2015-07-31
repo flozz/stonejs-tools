@@ -113,7 +113,7 @@ helpers.warn = function(message, options) {
     if (options.quiet || options.q) {
         return;
     }
-    console.warn(message);
+    console.warn("\x1B[1;33mWARN:\x1B[0m " + message);
 };
 
 /**
