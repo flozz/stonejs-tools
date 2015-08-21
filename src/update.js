@@ -91,6 +91,9 @@ update.updatePo = function(poData, potData) {
             po.translations[""][msgid] = pot.translations[""][msgid];
         }
         else {
+            if (!po.translations[""][msgid].comments) {
+                po.translations[""][msgid].comments = {};
+            }
             po.translations[""][msgid].comments.reference = pot.translations[""][msgid].comments.reference;
         }
     }
