@@ -111,10 +111,9 @@ Examples:
 
 ## Changelog
 
+* **1.0.3:** Fixes crash when the merged po file does not contain line references
 * **1.0.2:**
   * Fixes crash when parsing js files containing syntax errors
   * Reporting improved (extracted string ans skipped files count, syntax errors)
-* **1.0.1:**
-  * Makes stonejs command working on Unix
-* **1.0.0:**
-  * First Release
+* **1.0.1:** Makes stonejs command working on Unix
+* **1.0.0:** First Release
