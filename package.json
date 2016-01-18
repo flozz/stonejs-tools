@@ -1,6 +1,6 @@
 {
   "name": "stonejs-tools",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Tools for extracting/compiling translatable strings from Javascript/HTML source",
   "main": "src/index.js",
   "scripts": {
