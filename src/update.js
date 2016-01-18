@@ -38,7 +38,7 @@ update.main = function(poFiles, template, options, callback) {
     var files = [];
 
     if (!helpers.isFile(template)) {
-        helpers.error("The translation template does not exist: " + template);
+        helpers.error("The translation template does not exist: " + template, options);
         process.exit(1);
     }
 

@@ -42,11 +42,11 @@ build.main = function(poFiles, output, options, callback) {
     callback = callback || function(){};
 
     if (options.merge && helpers.isDir(output)) {
-        helpers.error("You requested a merged output file but '" + output + "' is a directory.");
+        helpers.error("You requested a merged output file but '" + output + "' is a directory.", options);
         process.exit(1);
     }
     else if (!options.merge && !helpers.isDir(output)) {
-        helpers.error(output + "' is not a directory.");
+        helpers.error(output + "' is not a directory.", options);
         process.exit(1);
     }
 
