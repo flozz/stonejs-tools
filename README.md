@@ -111,6 +111,7 @@ Examples:
 
 ## Changelog
 
+* **1.0.6:** Force encoding to UTF-8 when reading/writing files
 * **1.0.5:** Fixes crashes with wrong call of logging functions
 * **1.0.4:** Fixes path issue on Window (issue #2)
 * **1.0.3:** Fixes crash when the merged po file does not contain line references
