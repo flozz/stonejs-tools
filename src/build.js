@@ -93,7 +93,7 @@ build.main = function(poFiles, output, options, callback) {
             var poData, catalog, lang, result, fileName;
             for (var i=0 ; i<files.length ; i++) {
                 helpers.log("  * Building '" + files[i] + "'", options);
-                poData = fs.readFileSync(files[i]);
+                poData = fs.readFileSync(files[i], {encoding: "utf-8"});
                 if (!poData) {
                     helpers.warn("    /!\\ Skipped!", options);
                     continue;
@@ -105,7 +105,7 @@ build.main = function(poFiles, output, options, callback) {
             }
             if (options.merge) {
                 result = formats[options.format](catalogs);
-                fs.writeFileSync(output, result);
+                fs.writeFileSync(output, result, {encoding: "utf-8"});
                 helpers.ok("Translation built: " + output, options);
             }
             else {
@@ -114,7 +114,7 @@ build.main = function(poFiles, output, options, callback) {
                     catalog = {};
                     catalog[lang] = catalogs[lang];
                     result = formats[options.format](catalog);
-                    fs.writeFileSync(fileName, result);
+                    fs.writeFileSync(fileName, result, {encoding: "utf-8"});
                     helpers.log ("  * writing '" + fileName + "'", options);
                 }
                 helpers.ok("All translation built.", options);

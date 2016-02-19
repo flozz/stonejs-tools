@@ -70,7 +70,7 @@ extract.main = function(jsFiles, output, options, callback) {
                         return;
                     }
                     helpers.log("  * Extracting strings from '" + file + "'", options);
-                    var data = fs.readFileSync(file);
+                    var data = fs.readFileSync(file, {encoding: "utf-8"});
                     var extractedStrings = {};
                     var ext = file.toLowerCase().split(".");
                     ext = ext[ext.length-1];
@@ -107,7 +107,7 @@ extract.main = function(jsFiles, output, options, callback) {
                         "\n\x1B[1;36m" + Object.keys(strings).length + "\x1B[0m string(s) extracted" +
                         ((skipped > 0) ? ", \x1B[1;31m" + skipped + "\x1B[0m file(s) skipped." : "."),
                         options);
-                    fs.writeFile(output, extract.generatePo(strings), function(error) {
+                    fs.writeFile(output, extract.generatePo(strings), {encoding: "utf-8"}, function(error) {
                         if (error) {
                             helpers.error("An error occurred: " + error, options);
                         }

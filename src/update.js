@@ -42,7 +42,7 @@ update.main = function(poFiles, template, options, callback) {
         process.exit(1);
     }
 
-    var potData = fs.readFileSync(template);
+    var potData = fs.readFileSync(template, {encoding: "utf-8"});
 
     async.each(poFiles,
 
@@ -57,13 +57,13 @@ update.main = function(poFiles, template, options, callback) {
             var poData;
             for (var i=0 ; i<files.length ; i++) {
                 helpers.log("  * Updating '" + files[i] + "'", options);
-                poData = fs.readFileSync(files[i]);
+                poData = fs.readFileSync(files[i], {encoding: "utf-8"});
                 if (!poData) {
                     helpers.warn("    /!\\ Skipped!", options);
                     continue;
                 }
                 poData = update.updatePo(poData, potData);
-                fs.writeFileSync(files[i], poData);
+                fs.writeFileSync(files[i], poData, {encoding: "utf-8"});
             }
             callback();
         }
