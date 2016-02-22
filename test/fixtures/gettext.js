@@ -70,3 +70,8 @@ _("special 1 «↑éÉ☺»");
 
 _("duplicated");
 _("duplicated");
+
+// Es6
+
+var f = a => _("es6-1");
+var {x, y} = {x: _("es6-2"), y: _("es6-3")};

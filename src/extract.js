@@ -133,7 +133,7 @@ extract.main = function(jsFiles, output, options, callback) {
  */
 extract.extractJsStrings = function(source, functionsNames) {
     var strings = {};
-    var ast = espree.parse(source, {tolerant: true, tokens: true, loc: true});
+    var ast = espree.parse(source, {tolerant: true, tokens: true, loc: true, ecmaVersion: 6});
 
     function _cleanString(str) {
         return new Function("return " + str + ";")();  // jshint ignore:line
