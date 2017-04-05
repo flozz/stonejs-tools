@@ -111,6 +111,7 @@ Examples:
 
 ## Changelog
 
+* **1.0.8:** Adds the `.twig` extention as HTML file list
 * **1.0.7:** Allows string to be extracted from es2015 (ES6) sources
 * **1.0.6:** Force encoding to UTF-8 when reading/writing files
 * **1.0.5:** Fixes crashes with wrong call of logging functions
