@@ -74,7 +74,7 @@ extract.main = function(jsFiles, output, options, callback) {
                     var extractedStrings = {};
                     var ext = file.toLowerCase().split(".");
                     ext = ext[ext.length-1];
-                    if (["html", "htm", "xhtml", "xml"].indexOf(ext) >= 0) {
+                    if (["html", "htm", "xhtml", "xml", "twig"].indexOf(ext) >= 0) {
                         extractedStrings = extract.extractHtmlStrings(data.toString());
                     }
                     else {
