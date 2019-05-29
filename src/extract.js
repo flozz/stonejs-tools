@@ -200,7 +200,7 @@ extract.extractJsStrings = function(source, functionsNames) {
  * @return {Object} Translatable strings `{ <string>: [<lines>] }`.
  */
 extract.extractHtmlStrings = function(source) {
-    var $ = cheerio.load(source);
+    var $ = cheerio.load(source, {decodeEntities: false});
     var nodes = $("[stonejs]");
     var result = {};
     //console.log(nodes("[stonejs]"));
