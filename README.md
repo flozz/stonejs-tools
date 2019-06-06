@@ -111,6 +111,11 @@ Examples:
 
 ## Changelog
 
+* **1.1.0:**
+  * ES6 modules (import / export) support
+  * JSX support
+  * dependencies updates
+  * WARNING: octal literals are not supported anymore!
 * **1.0.8:** Adds the `.twig` extention as HTML file list
 * **1.0.7:** Allows string to be extracted from es2015 (ES6) sources
 * **1.0.6:** Force encoding to UTF-8 when reading/writing files
