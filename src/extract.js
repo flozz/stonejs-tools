@@ -77,9 +77,20 @@ extract.main = function(jsFiles, output, options, callback) {
                     if (["html", "htm", "xhtml", "xml", "twig"].indexOf(ext) >= 0) {
                         extractedStrings = extract.extractHtmlStrings(data.toString());
                     }
+                    else if (["jsx"].indexOf(ext) >= 0) {
+                        try {
+                            extractedStrings = extract.extractJsStrings(data.toString(), options.functions, true);
+                        } catch (error) {
+                            helpers.warn(error.toString(), options);
+                            helpers.warn("File skipped due to syntax errors", options);
+                            skipped += 1;
+                            doneCb();
+                            return;
+                        }
+                    }
                     else {
                         try {
-                            extractedStrings = extract.extractJsStrings(data.toString(), options.functions);
+                            extractedStrings = extract.extractJsStrings(data.toString(), options.functions, false);
                         } catch (error) {
                             helpers.warn(error.toString(), options);
                             helpers.warn("File skipped due to syntax errors", options);
@@ -131,7 +142,8 @@ extract.main = function(jsFiles, output, options, callback) {
  * @param {Array} functionsNames The name of th etranslation functions to search in the source.
  * @return {Object} Translatable strings `{ <string>: [<lines>] }`.
  */
-extract.extractJsStrings = function(source, functionsNames) {
+extract.extractJsStrings = function(source, functionsNames, isJsx) {
+    isJsx = isJsx || false;
     var strings = {};
     var ast = espree.parse(source, {
         tolerant: true,
@@ -140,9 +152,8 @@ extract.extractJsStrings = function(source, functionsNames) {
         ecmaVersion: 2019,
         sourceType: "module",
         ecmaFeatures: {
-            impliedStrict: false,
-            octalLiterals: true,
-        }
+            jsx: isJsx,
+        },
     });
 
     function _cleanString(str) {
