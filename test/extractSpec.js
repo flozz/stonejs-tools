@@ -82,14 +82,6 @@ describe("stonejs extract:", function() {
             )).to.have.key("hello@world");
         });
 
-        it("can extract translatable string with octal escaped char", function() {
-            expect(extract.extractJsStrings(
-                "_('hello\\043world')",
-
-                ["_", "gettext", "lazyGettext"]
-            )).to.have.key("hello#world");
-        });
-
         it("can extract concatenated translatable string", function() {
             expect(extract.extractJsStrings(
                 "_('hello ' + 'world')",
@@ -124,14 +116,6 @@ describe("stonejs extract:", function() {
 
                 ["_", "gettext", "lazyGettext"]
             )).to.have.key("hello 255");
-        });
-
-        it("can extract translatable string concatenated with integer (octal)", function() {
-            expect(extract.extractJsStrings(
-                "_('hello ' + 015)",
-
-                ["_", "gettext", "lazyGettext"]
-            )).to.have.key("hello 13");
         });
 
         it("can extract translatable string concatenated with float", function() {
@@ -290,7 +274,6 @@ describe("stonejs extract:", function() {
                     .and.to.contain("translatable 10")
                     .and.to.contain("translatable 11")
                     .and.to.contain("translatable 12")
-                    .and.to.contain("translatable 13")
                     .and.to.contain("translatable 14")
                     .and.to.contain("translatable 15")
                     .and.to.contain("translatable 16")
@@ -303,7 +286,6 @@ describe("stonejs extract:", function() {
                     .and.to.contain("escaped \\n")
                     .and.to.contain("escaped 6")
                     .and.to.contain("escaped @ 7")
-                    .and.to.contain("escaped # 8")
                     .and.to.contain("special 1 «↑éÉ☺»")
                     .and.to.contain("duplicated")
                     .and.to.contain("html translatable 1")

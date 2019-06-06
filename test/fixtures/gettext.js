@@ -14,7 +14,7 @@ _("nope 6" + identifier);
 
 _("translatable 1");
 _('translatable 2');
-_ ( 
+_ (
    "translatable 3"
 );
 foo._("translatable 4");
@@ -28,7 +28,6 @@ _("translatable 9", {});
 _("translatable " + "10");
 _("translatable " + 11);
 _("translatable " + 0x0C);
-_("translatable " + 015);
 _("translatable " + 1.4e1);
 _("translatable" + " " + "15");
 _("translatable " /* comment */ + "16");
@@ -58,7 +57,6 @@ _(
 6"
 );
 _("escaped \x40 7");  // \x40 = "@"
-_("escaped \043 8");  // \043 = "#"
 
 
 // Special chars
