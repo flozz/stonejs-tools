@@ -1,0 +1,31 @@
+{
+  "root": true,
+  "extends": "airbnb-base",
+  "env": {
+    "es6": true,
+    "browser": true,
+    "node": true,
+    "commonjs": true
+  },
+  "rules": {
+    "quotes": ["error", "double"],
+    "indent": ["error", 4],
+    "padded-blocks": ["error", {
+      "classes": "always"
+    }],
+    "no-multi-spaces": ["error", {
+      "ignoreEOLComments": true
+    }],
+    "no-continue": ["off"],
+    "function-paren-newline": ["error", "consistent"],
+    "no-plusplus": ["warn", {
+      "allowForLoopAfterthoughts": true
+    }]
+  },
+  "overrides": [{
+    "files": ["*.test.js", "**/__mocks__/*.js"],
+    "env": {
+      "jest": true
+    }
+  }]
+}

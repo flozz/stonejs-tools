@@ -3,3 +3,6 @@ doc
 test
 Gruntfile.js
 .travis.yml
+.tmp
+*.test.js
+.eslintrc.json
