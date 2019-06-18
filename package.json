@@ -4,7 +4,7 @@
   "description": "Tools for extracting/compiling translatable strings from Javascript/HTML source",
   "main": "src/index.js",
   "scripts": {
-    "test": "jest --coverage --coverageDirectory=.tmp/coverage lib bin",
+    "test": "jest --verbose --coverage --coverageDirectory=.tmp/coverage lib bin",
     "lint": "eslint lib"
   },
   "repository": {

@@ -20,7 +20,8 @@
     "function-paren-newline": ["error", "consistent"],
     "no-plusplus": ["warn", {
       "allowForLoopAfterthoughts": true
-    }]
+    }],
+    "no-underscore-dangle": 0
   },
   "overrides": [{
     "files": ["*.test.js", "**/__mocks__/*.js"],
