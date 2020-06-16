@@ -332,9 +332,11 @@ extract.generatePo = function(strings) {
     };
 
     for (var msgid in strings) {
+        var msgid_plural = strings[msgid].msgid_plural;
         data.translations[""][msgid] = {
             msgid: msgid,
-            msgstr: "",
+            msgid_plural: msgid_plural || undefined,
+            msgstr: msgid_plural ? ["", ""] : "",
             comments: {
                 reference: _buildRef(strings[msgid].refs)
             }

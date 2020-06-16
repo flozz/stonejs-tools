@@ -261,6 +261,18 @@ describe("stonejs extract:", function() {
                 .and.to.contain('msgid "world"');
         });
 
+        it("handles plural form", function() {
+            var pluralStrings = {
+                "apple": { msgid_plural: "apples", refs: [{file: "foo.js", line: 1}] },
+            };
+            expect(extract.generatePo(pluralStrings))
+                .to.contain('#: foo.js:1')
+                .and.to.contain('msgid "apple"')
+                .and.to.contain('msgid_plural "apples"')
+                .and.to.contain('msgstr[0] ""')
+                .and.to.contain('msgstr[1] ""');
+        });
+
     });
 
     describe("extract.main", function() {
