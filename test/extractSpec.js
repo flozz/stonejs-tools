@@ -279,7 +279,8 @@ describe("stonejs extract:", function() {
 
         var outputFile = "__test_output.pot";
 
-        after(function() {
+
+        afterEach(function() {
             if (helpers.isFile(outputFile)) {
                 fs.unlinkSync(outputFile);
             }
@@ -317,8 +318,79 @@ describe("stonejs extract:", function() {
                     .and.to.contain("escaped @ 7")
                     .and.to.contain("special 1 «↑éÉ☺»")
                     .and.to.contain("duplicated")
+                    .and.to.contain("es6-1")
+                    .and.to.contain("es6-2")
+                    .and.to.contain("es6-3")
                     .and.to.contain("html translatable 1")
                     .and.to.contain("html translatable <em>2</em>");
+                done();
+            });
+        });
+
+        it("extracts strings from js files and generates the po template file, with plural support", function(done) {
+            extract.main(["test/fixtures/ngettext.js"], outputFile, {quiet: true}, function(error) {
+                expect(error).not.to.be.ok();
+                expect(helpers.isFile(outputFile)).to.be.ok();
+                expect(fs.readFileSync(outputFile).toString())
+                    .not.to.contain("nope")
+                    .and.to.contain("translatable 1")
+                    .and.to.contain("translatable 2")
+                    .and.to.contain("translatable 3")
+                    .and.to.contain("translatable 4")
+                    .and.to.contain("translatable 5")
+                    .and.to.contain("translatable 6")
+                    .and.to.contain("translatable 7")
+                    .and.to.contain("translatable 8")
+                    .and.to.contain("translatable 9")
+                    .and.to.contain("translatable 10")
+                    .and.to.contain("translatable 11")
+                    .and.to.contain("translatable 12")
+                    .and.to.contain("translatable 14")
+                    .and.to.contain("translatable 15")
+                    .and.to.contain("translatable 16")
+                    .and.to.contain("translatable 17")
+                    .and.to.contain("translatable 18")
+                    .and.to.contain("translatable plural 1")
+                    .and.to.contain("translatable plural 2")
+                    .and.to.contain("translatable plural 3")
+                    .and.to.contain("translatable plural 4")
+                    .and.to.contain("translatable plural 5")
+                    .and.to.contain("translatable plural 6")
+                    .and.to.contain("translatable plural 7")
+                    .and.to.contain("translatable plural 8")
+                    .and.to.contain("translatable plural 9")
+                    .and.to.contain("translatable plural 10")
+                    .and.to.contain("translatable plural 11")
+                    .and.to.contain("translatable plural 12")
+                    .and.to.contain("translatable plural 14")
+                    .and.to.contain("translatable plural 15")
+                    .and.to.contain("translatable plural 16")
+                    .and.to.contain("translatable plural 17")
+                    .and.to.contain("translatable plural 18")
+                    .and.to.contain("escaped \\\" 1")
+                    .and.to.contain("escaped ' 2")
+                    .and.to.contain("escaped \\\\ 3")
+                    .and.to.contain("escaped \\t 4")
+                    .and.to.contain("escaped \\n")
+                    .and.to.contain("escaped 6")
+                    .and.to.contain("escaped @ 7")
+                    .and.to.contain("escaped plural \\\" 1")
+                    .and.to.contain("escaped plural ' 2")
+                    .and.to.contain("escaped plural \\\\ 3")
+                    .and.to.contain("escaped plural \\t 4")
+                    .and.to.contain("escaped plural \\n")
+                    .and.to.contain("escaped plural 6")
+                    .and.to.contain("escaped plural @ 7")
+                    .and.to.contain("special 1 «↑éÉ☺»")
+                    .and.to.contain("special plural 1 «↑éÉ☺»")
+                    .and.to.contain("duplicated")
+                    .and.to.contain("duplicated plural")
+                    .and.to.contain("es6-1")
+                    .and.to.contain("es6-1 plural")
+                    .and.to.contain("es6-2")
+                    .and.to.contain("es6-2 plural")
+                    .and.to.contain("es6-3")
+                    .and.to.contain("es6-3 plural");
                 done();
             });
         });
