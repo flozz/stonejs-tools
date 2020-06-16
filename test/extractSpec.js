@@ -14,7 +14,7 @@ describe("stonejs extract:", function() {
             expect(extract.extractJsStrings(
                 "'hello';\nfoo('hello');bar_(\"hello\")",
 
-                ["_", "gettext", "lazyGettext"]
+                ["_", "gettext", "lazyGettext"], []
             )).not.to.have.key("hello");
         });
 
@@ -22,7 +22,7 @@ describe("stonejs extract:", function() {
             expect(extract.extractJsStrings(
                 "// _('hello')",
 
-                ["_", "gettext", "lazyGettext"]
+                ["_", "gettext", "lazyGettext"], []
             )).not.to.have.key("hello");
         });
 
@@ -30,7 +30,7 @@ describe("stonejs extract:", function() {
             expect(extract.extractJsStrings(
                 "/*\n * _('hello')\n */",
 
-                ["_", "gettext", "lazyGettext"]
+                ["_", "gettext", "lazyGettext"], []
             )).not.to.have.key("hello");
         });
 
@@ -38,7 +38,7 @@ describe("stonejs extract:", function() {
             expect(extract.extractJsStrings(
                 "_('hello' + identifier)",
 
-                ["_", "gettext", "lazyGettext"]
+                ["_", "gettext", "lazyGettext"], []
             )).not.to.have.key("hello");
         });
 
@@ -46,7 +46,7 @@ describe("stonejs extract:", function() {
             expect(extract.extractJsStrings(
                 "_('hello')",
 
-                ["_", "gettext", "lazyGettext"]
+                ["_", "gettext", "lazyGettext"], []
             )).to.have.key("hello");
         });
 
@@ -54,7 +54,7 @@ describe("stonejs extract:", function() {
             expect(extract.extractJsStrings(
                 "_(\"hello\")",
 
-                ["_", "gettext", "lazyGettext"]
+                ["_", "gettext", "lazyGettext"], []
             )).to.have.key("hello");
         });
 
@@ -62,7 +62,7 @@ describe("stonejs extract:", function() {
             expect(extract.extractJsStrings(
                 "_(\t\n \"hello\"  )",
 
-                ["_", "gettext", "lazyGettext"]
+                ["_", "gettext", "lazyGettext"], []
             )).to.have.key("hello");
         });
 
@@ -70,7 +70,7 @@ describe("stonejs extract:", function() {
             expect(extract.extractJsStrings(
                 "_('rock \\'n roll')",
 
-                ["_", "gettext", "lazyGettext"]
+                ["_", "gettext", "lazyGettext"], []
             )).to.have.key("rock 'n roll");
         });
 
@@ -78,7 +78,7 @@ describe("stonejs extract:", function() {
             expect(extract.extractJsStrings(
                 "_('hello\\x40world')",
 
-                ["_", "gettext", "lazyGettext"]
+                ["_", "gettext", "lazyGettext"], []
             )).to.have.key("hello@world");
         });
 
@@ -86,7 +86,7 @@ describe("stonejs extract:", function() {
             expect(extract.extractJsStrings(
                 "_('hello ' + 'world')",
 
-                ["_", "gettext", "lazyGettext"]
+                ["_", "gettext", "lazyGettext"], []
             )).to.have.key("hello world");
         });
 
@@ -94,19 +94,19 @@ describe("stonejs extract:", function() {
             expect(extract.extractJsStrings(
                 "_('hello ' + 8)",
 
-                ["_", "gettext", "lazyGettext"]
+                ["_", "gettext", "lazyGettext"], []
             )).to.have.key("hello 8");
 
             expect(extract.extractJsStrings(
                 "_('hello ' + 8.0)",
 
-                ["_", "gettext", "lazyGettext"]
+                ["_", "gettext", "lazyGettext"], []
             )).to.have.key("hello 8");
 
             expect(extract.extractJsStrings(
                 "_('hello ' + 10e3)",
 
-                ["_", "gettext", "lazyGettext"]
+                ["_", "gettext", "lazyGettext"], []
             )).to.have.key("hello 10000");
         });
 
@@ -114,7 +114,7 @@ describe("stonejs extract:", function() {
             expect(extract.extractJsStrings(
                 "_('hello ' + 0xFF)",
 
-                ["_", "gettext", "lazyGettext"]
+                ["_", "gettext", "lazyGettext"], []
             )).to.have.key("hello 255");
         });
 
@@ -122,19 +122,19 @@ describe("stonejs extract:", function() {
             expect(extract.extractJsStrings(
                 "_('hello ' + 3.14)",
 
-                ["_", "gettext", "lazyGettext"]
+                ["_", "gettext", "lazyGettext"], []
             )).to.have.key("hello 3.14");
 
             expect(extract.extractJsStrings(
                 "_('hello ' + .3)",
 
-                ["_", "gettext", "lazyGettext"]
+                ["_", "gettext", "lazyGettext"], []
             )).to.have.key("hello 0.3");
 
             expect(extract.extractJsStrings(
                 "_('hello ' + 10e-3)",
 
-                ["_", "gettext", "lazyGettext"]
+                ["_", "gettext", "lazyGettext"], []
             )).to.have.key("hello 0.01");
         });
 
@@ -142,7 +142,7 @@ describe("stonejs extract:", function() {
             expect(extract.extractJsStrings(
                 "_('hello ' +\n'world')",
 
-                ["_", "gettext", "lazyGettext"]
+                ["_", "gettext", "lazyGettext"], []
             )).to.have.key("hello world");
         });
 
@@ -150,7 +150,7 @@ describe("stonejs extract:", function() {
             expect(extract.extractJsStrings(
                 "_('hello ' /* everybody */ + 'world')",
 
-                ["_", "gettext", "lazyGettext"]
+                ["_", "gettext", "lazyGettext"], []
             )).to.have.key("hello world");
         });
 
@@ -158,7 +158,7 @@ describe("stonejs extract:", function() {
             expect(extract.extractJsStrings(
                 "_('hello \\\nworld')",
 
-                ["_", "gettext", "lazyGettext"]
+                ["_", "gettext", "lazyGettext"], []
             )).to.have.key("hello world");
         });
 
@@ -166,7 +166,7 @@ describe("stonejs extract:", function() {
             expect(extract.extractJsStrings(
                 "_('hello \\\r\nworld')",
 
-                ["_", "gettext", "lazyGettext"]
+                ["_", "gettext", "lazyGettext"], []
             )).to.have.key("hello world");
         });
 
@@ -174,7 +174,7 @@ describe("stonejs extract:", function() {
             expect(extract.extractJsStrings(
                 "_('hello {name}', {name: 'John'})",
 
-                ["_", "gettext", "lazyGettext"]
+                ["_", "gettext", "lazyGettext"], []
             )).to.have.key("hello {name}");
         });
 
@@ -182,7 +182,7 @@ describe("stonejs extract:", function() {
             expect(extract.extractJsStrings(
                 "Stone.gettext('hello')",
 
-                ["_", "gettext", "lazyGettext"]
+                ["_", "gettext", "lazyGettext"], []
             )).to.have.key("hello");
         });
 
@@ -190,26 +190,43 @@ describe("stonejs extract:", function() {
             expect(extract.extractJsStrings(
                 "\n\n_('hello')",
 
-                ["_", "gettext", "lazyGettext"]
-            ).hello).to.contain(3);
+                ["_", "gettext", "lazyGettext"], []
+            ).hello.refs).to.contain(3);
         });
 
         it("can group duplicated translatable string", function() {
             expect(extract.extractJsStrings(
                 "_('hello');\n_('hello');",
 
-                ["_", "gettext", "lazyGettext"]
-            ).hello).to.have.length(2);
+                ["_", "gettext", "lazyGettext"], []
+            ).hello.refs).to.have.length(2);
         });
 
         it("can handle strings with unicode characters", function() {
             expect(extract.extractJsStrings(
                 "_('⚠ Voici une chaîne avec des caractères spéciaux ☺')",
 
-                ["_", "gettext", "lazyGettext"]
+                ["_", "gettext", "lazyGettext"], []
             )).to.have.key("⚠ Voici une chaîne avec des caractères spéciaux ☺");
         });
 
+        describe("plural forms support", function() {
+            it("can extract singular form as key", function() {
+                expect(extract.extractJsStrings(
+                    "N_('apple', 'apples', 2)",
+    
+                    ["_", "gettext", "lazyGettext"], ["N_", "ngettext", "lazyNgettext"]
+                )).to.have.key("apple");
+            });
+
+            it("can extract plural form", function() {
+                expect(extract.extractJsStrings(
+                    "N_('apple', 'apples', 2)",
+    
+                    ["_", "gettext", "lazyGettext"], ["N_", "ngettext", "lazyNgettext"]
+                ).apple.msgid_plural).to.be("apples");
+            });
+        });
     });
 
     describe("extract.extractHtmlStrings", function() {
@@ -231,8 +248,8 @@ describe("stonejs extract:", function() {
     describe("extract.generatePo", function() {
 
         var strings = {
-            "hello": [{file: "foo.js", line: 1}],
-            "world": [{file: "foo.js", line: 2}, {file: "foobaz.js", line: 42}]
+            "hello": { refs: [{file: "foo.js", line: 1}] },
+            "world": { refs: [{file: "foo.js", line: 2}, {file: "foobaz.js", line: 42}] }
         };
 
         it("generates the po file", function() {
