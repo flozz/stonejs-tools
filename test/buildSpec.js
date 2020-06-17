@@ -33,6 +33,20 @@ describe("stonejs build:", function() {
             expect(catalogs.fr.messages["translatable 1"]).to.contain("traductible 1");
         });
 
+        describe("plural form messages", function() {
+            var poFile = "test/fixtures/ngettext-cs.po";
+            var poData = fs.readFileSync(poFile);
+            it("has the plural messages", function() {
+                var catalogs = build.poToJson(poData);
+                expect(catalogs.cs).to.have.key("messages");
+                expect(catalogs.cs.messages)
+                    .to.have.key("horse");
+                expect(catalogs.cs.messages.horse).to.contain("kůň")
+                    .and.to.contain("koně")
+                    .and.to.contain("koní");
+            });
+        });
+
     });
 
     describe("build.main", function() {
