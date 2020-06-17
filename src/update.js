@@ -84,7 +84,7 @@ update.updatePo = function(poData, potData) {
     var po = gettextParser.po.parse(poData);
 
     po.headers["po-revision-date"] = helpers.dateFormat(new Date());
-    var nplural = helpers.nplural(po.headers["plural-forms"]);
+    var nplural = helpers.nplurals(po.headers["plural-forms"]);
 
     for (var msgid in pot.translations[""]) {
         if (msgid === "") continue;

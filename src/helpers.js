@@ -151,7 +151,7 @@ helpers.ok = function(message, options) {
  * @param {string} pluralForms plural forms
  * @returns {number}
  */
-helpers.nplural = function(pluralForms) {
+helpers.nplurals = function(pluralForms) {
     var REGEX = /^\s*nplurals=\s*(\d+)\s*;\s*plural=([()n\s<>=\d&|%?!:+\-*\/]+);?[\s\\n]*$/g;
     var result = REGEX.exec(pluralForms);
     if (!result) {
