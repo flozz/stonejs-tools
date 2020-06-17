@@ -13,3 +13,9 @@ msgid "horse"
 msgid_plural "horses"
 msgstr[0] ""
 msgstr[1] ""
+
+#: test for updateSpec.js
+msgid "apple"
+msgid_plural "apples"
+msgstr[0] ""
+msgstr[1] ""

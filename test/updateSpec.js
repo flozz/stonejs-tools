@@ -22,6 +22,32 @@ describe("stonejs update:", function() {
                 //.and.to.contain('#~ msgid "removed 1"')
                 //.and.not.to.contain('msgid "removed 1"');
         });
+
+        describe("update plural forms", function() {
+            var potFile = "test/fixtures/ngettext.pot";
+            var inputPoFile = "test/fixtures/ngettext-cs.po";
+            var potData = fs.readFileSync(potFile);
+            var poData = fs.readFileSync(inputPoFile);
+
+            it("updates the po file", function() {
+                expect(update.updatePo(poData, potData))
+                    .to.contain('msgid "horse"')
+                    .and.to.contain('msgid_plural "horses"')
+                    .and.to.contain('msgstr[0] "kůň"')
+                    .and.to.contain('msgstr[1] "koně"')
+                    .and.to.contain('msgstr[2] "koní"');
+            });
+
+            it("adjust number of plural forms", function() {
+                expect(update.updatePo(poData, potData))
+                    .to.contain('msgid "apple"')
+                    .and.to.contain('msgid_plural "apples"')
+                    .and.to.contain('msgstr[0] ""')
+                    .and.to.contain('msgstr[1] ""')
+                    .and.to.contain('msgstr[2] ""');
+            });
+
+        });
     });
 
     describe("update.main", function() {
