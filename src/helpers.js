@@ -146,5 +146,18 @@ helpers.ok = function(message, options) {
     cli.ok(message);
 };
 
+/**
+ * Extract number of plural forms
+ * @param {string} pluralForms plural forms
+ * @returns {number}
+ */
+helpers.nplural = function(pluralForms) {
+    var REGEX = /^\s*nplurals=\s*(\d+)\s*;\s*plural=([()n\s<>=\d&|%?!:+\-*\/]+);?[\s\\n]*$/g;
+    var result = REGEX.exec(pluralForms);
+    if (!result) {
+        throw new Error("plural forms are not valid");
+    }
+    return Number(result[1]);
+};
 
 module.exports = helpers;
