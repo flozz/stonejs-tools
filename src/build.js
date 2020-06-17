@@ -138,7 +138,7 @@ build.poToJson = function(poData) {
 
     var catalog = {};
     catalog[lang] = {
-        "plural-forms": po.headers["plural-forms"] || "nplurals=2; plural=(n > 1);",
+        "plural-forms": po.headers["plural-forms"] || "nplurals=2; plural=(n != 1);",
         messages: {
             // "<msgid>": ["<msgstr>"]
         }
