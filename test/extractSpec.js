@@ -240,7 +240,7 @@ describe("stonejs extract:", function() {
 
             it("extract gettext noop with shorthand", function() {
                 expect(extract.extractJsStrings(
-                    "gettext_noop('hello')",
+                    "N_('hello')",
     
                     ["N_", "gettext_noop"], []
                 )).to.have.key("hello");
