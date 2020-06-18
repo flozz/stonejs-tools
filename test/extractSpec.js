@@ -213,17 +213,17 @@ describe("stonejs extract:", function() {
         describe("plural forms support", function() {
             it("can extract singular form as key", function() {
                 expect(extract.extractJsStrings(
-                    "N_('apple', 'apples', 2)",
+                    "ngettext('apple', 'apples', 2)",
     
-                    ["_", "gettext", "lazyGettext"], ["N_", "ngettext", "lazyNgettext"]
+                    ["_", "gettext", "lazyGettext"], ["ngettext", "lazyNgettext"]
                 )).to.have.key("apple");
             });
 
             it("can extract plural form", function() {
                 expect(extract.extractJsStrings(
-                    "N_('apple', 'apples', 2)",
+                    "ngettext('apple', 'apples', 2)",
     
-                    ["_", "gettext", "lazyGettext"], ["N_", "ngettext", "lazyNgettext"]
+                    ["_", "gettext", "lazyGettext"], ["ngettext", "lazyNgettext"]
                 ).apple.msgid_plural).to.be("apples");
             });
         });

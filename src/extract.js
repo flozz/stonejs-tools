@@ -24,7 +24,7 @@ var extract = {};
  *
  *     {
  *         'functions': ["_", "gettext", "lazyGettext"],   // The name of the gettext functions
- *         'pluralFunctions': ["N_", "ngettext", "lazyNgettext"],   // The name of the ngettext functions
+ *         'pluralFunctions': ["ngettext", "lazyNgettext"],   // The name of the ngettext functions
  *         'quiet': false   // If true: do not output logs
  *     }
  *
@@ -44,7 +44,7 @@ extract.main = function(jsFiles, output, options, callback) {
         options.functions = options.functions.split(",");
     }
     if (options.pluralFunctions === undefined) {
-        options.pluralFunctions = ["N_", "ngettext", "lazyNgettext"];
+        options.pluralFunctions = ["ngettext", "lazyNgettext"];
     }
     else if (typeof options.pluralFunctions == "string") {
         options.pluralFunctions = options.pluralFunctions.split(",");
