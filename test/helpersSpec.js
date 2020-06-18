@@ -45,4 +45,11 @@ describe("helpers:", function() {
 
     });
 
+    describe("nplural", function() {
+
+        it("extracts number of plural forms", function() {
+            expect(helpers.nplurals("nplurals=2; plural=(n > 1);\n")).to.be(2);
+            expect(helpers.nplurals(" nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\\n")).to.be(3);
+        });
+    });
 });

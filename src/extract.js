@@ -24,6 +24,7 @@ var extract = {};
  *
  *     {
  *         'functions': ["_", "gettext", "lazyGettext"],   // The name of the gettext functions
+ *         'pluralFunctions': ["ngettext", "lazyNgettext"],   // The name of the ngettext functions
  *         'quiet': false   // If true: do not output logs
  *     }
  *
@@ -41,6 +42,12 @@ extract.main = function(jsFiles, output, options, callback) {
     }
     else if (typeof options.functions == "string") {
         options.functions = options.functions.split(",");
+    }
+    if (options.pluralFunctions === undefined) {
+        options.pluralFunctions = ["ngettext", "lazyNgettext"];
+    }
+    else if (typeof options.pluralFunctions == "string") {
+        options.pluralFunctions = options.pluralFunctions.split(",");
     }
     callback = callback || function(){};
 
@@ -79,7 +86,7 @@ extract.main = function(jsFiles, output, options, callback) {
                     }
                     else if (["jsx"].indexOf(ext) >= 0) {
                         try {
-                            extractedStrings = extract.extractJsStrings(data.toString(), options.functions, true);
+                            extractedStrings = extract.extractJsStrings(data.toString(), options.functions, options.pluralFunctions, true);
                         } catch (error) {
                             helpers.warn(error.toString(), options);
                             helpers.warn("File skipped due to syntax errors", options);
@@ -90,7 +97,7 @@ extract.main = function(jsFiles, output, options, callback) {
                     }
                     else {
                         try {
-                            extractedStrings = extract.extractJsStrings(data.toString(), options.functions, false);
+                            extractedStrings = extract.extractJsStrings(data.toString(), options.functions, options.pluralFunctions, false);
                         } catch (error) {
                             helpers.warn(error.toString(), options);
                             helpers.warn("File skipped due to syntax errors", options);
@@ -101,12 +108,15 @@ extract.main = function(jsFiles, output, options, callback) {
                     }
                     for (var str in extractedStrings) {
                         if (strings[str] === undefined) {
-                            strings[str] = [];
+                            strings[str] = { refs: [] };
                         }
-                        for (var i=0 ; i<extractedStrings[str].length ; i++) {
-                            strings[str].push({
+                        if(extractedStrings[str].msgid_plural) {
+                            strings[str].msgid_plural = extractedStrings[str].msgid_plural;
+                        }
+                        for (var i=0 ; i<extractedStrings[str].refs.length ; i++) {
+                            strings[str].refs.push({
                                 file: file,
-                                line: extractedStrings[str][i]
+                                line: extractedStrings[str].refs[i]
                             });
                         }
                     }
@@ -139,10 +149,12 @@ extract.main = function(jsFiles, output, options, callback) {
  * @method extractJsStrings
  * @static
  * @param {String} source The Javascript source code.
- * @param {Array} functionsNames The name of th etranslation functions to search in the source.
+ * @param {string[]} functionsNames The name of th etranslation functions to search in the source.
+ * @param {string[]} pluralFunctionsNames The name of the translation functions with plural support.
+ * @param {boolean} [isJsx] whether source file is jsx
  * @return {Object} Translatable strings `{ <string>: [<lines>] }`.
  */
-extract.extractJsStrings = function(source, functionsNames, isJsx) {
+extract.extractJsStrings = function(source, functionsNames, pluralFunctionsNames, isJsx) {
     isJsx = isJsx || false;
     var strings = {};
     var ast = espree.parse(source, {
@@ -162,13 +174,46 @@ extract.extractJsStrings = function(source, functionsNames, isJsx) {
 
     var f_fn = false;  // In function flag
     var f_sp = false;  // In parenthesis flag
-    var buff = true;   // Buff to concat splitted strings
+    var f_isPlural = false; // plural forms function flag
+    var f_findPlural = false; // Find plural message id
+    var msgBuff = true;   // Buff to concat splitted strings
+    var msgid; // msgid
+    var line; // msgid line
+    var msgid_plural;
+    function pushString() {
+        if (strings[msgid] === undefined) {
+            strings[msgid] = {};
+        }
+        if(strings[msgid].refs === undefined) {
+            strings[msgid].refs = [];
+        }
+        strings[msgid].refs.push(line);
+        if(f_isPlural) {
+            strings[msgid].msgid_plural = msgid_plural;
+        }
+    }
+    function stop() {
+        f_fn = false;
+        f_sp = false;
+        f_isPlural = false;
+        f_findPlural = false;
+        msgBuff = "";
+        msgid = undefined;
+        line = undefined;
+        msgid_plural = undefined;
+    }
     for (var i=0 ; i<ast.tokens.length ; i++) {
 
         // ?
         if (!f_fn && !f_sp) {
-            if (ast.tokens[i].type == "Identifier" && functionsNames.indexOf(ast.tokens[i].value) > -1) {
-                f_fn = true;
+            if (ast.tokens[i].type == "Identifier") {
+                if(functionsNames.indexOf(ast.tokens[i].value) > -1) {
+                    f_fn = true;
+                } else if(pluralFunctionsNames.indexOf(ast.tokens[i].value) > -1) {
+                    f_fn = true;
+                    f_isPlural = true;
+                    f_findPlural = false;
+                }
             }
         }
 
@@ -176,7 +221,7 @@ extract.extractJsStrings = function(source, functionsNames, isJsx) {
         else if (f_fn && !f_sp) {
             if (ast.tokens[i].type == "Punctuator" && ast.tokens[i].value == "(") {
                 f_sp = true;
-                buff = "";
+                msgBuff = "";
             }
             else {
                 f_fn = false;
@@ -186,25 +231,34 @@ extract.extractJsStrings = function(source, functionsNames, isJsx) {
         // functionName (
         else if (f_fn && f_sp) {
             if (ast.tokens[i].type == "String" || ast.tokens[i].type == "Numeric") {
-                buff += _cleanString(ast.tokens[i].value);
+                msgBuff += _cleanString(ast.tokens[i].value);
             }
             else if (ast.tokens[i].type == "Punctuator" && ast.tokens[i].value == "+") {
                 continue;
             }
             else if (ast.tokens[i].type == "Identifier") {
-                buff = "";
-                f_fn = false;
-                f_sp = false;
+                msgBuff = "";
+                stop();
             }
             else {
-                if (strings[buff] === undefined) {
-                    strings[buff] = [ast.tokens[i].loc.start.line];
-                }
-                else {
-                    strings[buff].push(ast.tokens[i].loc.start.line);
-                }
-                f_fn = false;
-                f_sp = false;
+                if(f_isPlural) {
+                    if(f_findPlural) {
+                        msgid_plural = msgBuff;
+                        pushString();
+                        stop();
+                    } else {
+                        msgid = msgBuff;
+                        line = ast.tokens[i].loc.start.line;
+                        msgBuff = "";
+                        f_findPlural = true;
+                    }
+
+                } else {
+                    msgid = msgBuff;
+                    line = ast.tokens[i].loc.start.line;
+                    pushString();
+                    stop();
+                }            
             }
         }
     }
@@ -226,7 +280,7 @@ extract.extractHtmlStrings = function(source) {
     var result = {};
     //console.log(nodes("[stonejs]"));
     nodes.each(function(node) {
-        result[$(nodes[node]).html()] = [0];
+        result[$(nodes[node]).html()] = { refs: [0] };
     });
     return result;
 };
@@ -278,11 +332,13 @@ extract.generatePo = function(strings) {
     };
 
     for (var msgid in strings) {
+        var msgid_plural = strings[msgid].msgid_plural;
         data.translations[""][msgid] = {
             msgid: msgid,
-            msgstr: "",
+            msgid_plural: msgid_plural || undefined,
+            msgstr: msgid_plural ? ["", ""] : "",
             comments: {
-                reference: _buildRef(strings[msgid])
+                reference: _buildRef(strings[msgid].refs)
             }
         };
     }

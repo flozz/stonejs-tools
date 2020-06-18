@@ -84,6 +84,7 @@ update.updatePo = function(poData, potData) {
     var po = gettextParser.po.parse(poData);
 
     po.headers["po-revision-date"] = helpers.dateFormat(new Date());
+    var nplural = helpers.nplurals(po.headers["plural-forms"]);
 
     for (var msgid in pot.translations[""]) {
         if (msgid === "") continue;
@@ -95,6 +96,17 @@ update.updatePo = function(poData, potData) {
                 po.translations[""][msgid].comments = {};
             }
             po.translations[""][msgid].comments.reference = pot.translations[""][msgid].comments.reference;
+        }
+        var msgid_plural = pot.translations[""][msgid].msgid_plural;
+        if (msgid_plural) {
+            po.translations[""][msgid].msgid_plural = msgid_plural;
+            if (po.translations[""][msgid].msgstr.length !== nplural) {
+                var msgstr = [];
+                for (var i = 0; i < nplural; i++) {
+                    msgstr.push(po.translations[""][msgid].msgstr[i] || "");
+                }
+                po.translations[""][msgid].msgstr = msgstr;
+            }
         }
     }
 
