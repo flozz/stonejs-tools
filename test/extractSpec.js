@@ -227,6 +227,25 @@ describe("stonejs extract:", function() {
                 ).apple.msgid_plural).to.be("apples");
             });
         });
+
+        describe("gettext noop support", function() {
+            
+            it("extract gettext noop", function() {
+                expect(extract.extractJsStrings(
+                    "gettext_noop('hello')",
+    
+                    ["N_", "gettext_noop"], []
+                )).to.have.key("hello");
+            });
+
+            it("extract gettext noop with shorthand", function() {
+                expect(extract.extractJsStrings(
+                    "N_('hello')",
+    
+                    ["N_", "gettext_noop"], []
+                )).to.have.key("hello");
+            });
+        });
     });
 
     describe("extract.extractHtmlStrings", function() {
@@ -321,6 +340,8 @@ describe("stonejs extract:", function() {
                     .and.to.contain("es6-1")
                     .and.to.contain("es6-2")
                     .and.to.contain("es6-3")
+                    .and.to.contain("translatable noop 1")
+                    .and.to.contain("translatable noop 2")
                     .and.to.contain("html translatable 1")
                     .and.to.contain("html translatable <em>2</em>");
                 done();

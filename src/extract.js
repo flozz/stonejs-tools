@@ -38,7 +38,7 @@ var extract = {};
 extract.main = function(jsFiles, output, options, callback) {
     options = options || {};
     if (options.functions === undefined) {
-        options.functions = ["_", "gettext", "lazyGettext"];
+        options.functions = ["_", "gettext", "lazyGettext", "gettext_noop", "N_"];
     }
     else if (typeof options.functions == "string") {
         options.functions = options.functions.split(",");

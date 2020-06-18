@@ -73,3 +73,7 @@ _("duplicated");
 
 var f = a => _("es6-1");
 var {x, y} = {x: _("es6-2"), y: _("es6-3")};
+
+// gettext_noop
+gettext_noop("translatable noop 1");
+N_("translatable noop 2");
