@@ -111,6 +111,10 @@ Examples:
 
 ## Changelog
 
+* **1.2.0:**
+  * Support of plurals (`ngettext()`) (@jbghoul, #11)
+  * Support of `gettext_noop()` (@jbghoul, #16)
+  * Update dependencies
 * **1.1.0:**
   * ES6 modules (import / export) support
   * JSX support
