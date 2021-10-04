@@ -88,7 +88,12 @@ extract.main = function(jsFiles, output, options, callback) {
                         try {
                             extractedStrings = extract.extractJsStrings(data.toString(), options.functions, options.pluralFunctions, true);
                         } catch (error) {
-                            helpers.warn(error.toString(), options);
+                            helpers.warn(
+                                "Line " + error.lineNumber +
+                                ", column " + error.column +
+                                ": " + error.toString(),
+                                options
+                            );
                             helpers.warn("File skipped due to syntax errors", options);
                             skipped += 1;
                             doneCb();
@@ -99,7 +104,12 @@ extract.main = function(jsFiles, output, options, callback) {
                         try {
                             extractedStrings = extract.extractJsStrings(data.toString(), options.functions, options.pluralFunctions, false);
                         } catch (error) {
-                            helpers.warn(error.toString(), options);
+                            helpers.warn(
+                                "Line " + error.lineNumber +
+                                ", column " + error.column +
+                                ": " + error.toString(),
+                                options
+                            );
                             helpers.warn("File skipped due to syntax errors", options);
                             skipped += 1;
                             doneCb();
@@ -258,7 +268,7 @@ extract.extractJsStrings = function(source, functionsNames, pluralFunctionsNames
                     line = ast.tokens[i].loc.start.line;
                     pushString();
                     stop();
-                }            
+                }
             }
         }
     }
