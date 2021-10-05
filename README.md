@@ -111,7 +111,8 @@ Examples:
 
 ## Changelog
 
-* **1.3.0:**: Add the line and the column of syntax errors (#25)
+* **1.4.0:** Update JS parser and enable latest ES syntaxes
+* **1.3.0:** Add the line and the column of syntax errors (#25)
 * **1.2.0:**
   * Support of plurals (`ngettext()`) (@jbghoul, #11)
   * Support of `gettext_noop()` (@jbghoul, #16)
