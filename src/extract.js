@@ -171,7 +171,7 @@ extract.extractJsStrings = function(source, functionsNames, pluralFunctionsNames
         tolerant: true,
         tokens: true,
         loc: true,
-        ecmaVersion: 2019,
+        ecmaVersion: "latest",
         sourceType: "module",
         ecmaFeatures: {
             jsx: isJsx,
