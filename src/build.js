@@ -148,8 +148,8 @@ build.poToJson = function(poData) {
         for (var msgid in po.translations[msgctxt]) {
             if (msgid === "") continue;
             if (!catalog[lang].messages[msgid]) catalog[lang].messages[msgid] = {};
-            if (msgctxt === "") msgctxt = "*"
-            catalog[lang].messages[msgid][msgctxt] = po.translations[msgctxt][msgid].msgstr;
+            var jsonContext = msgctxt === "" ? "*" : msgctxt;
+            catalog[lang].messages[msgid][jsonContext] = po.translations[msgctxt][msgid].msgstr;
         }
     }
     return catalog;
