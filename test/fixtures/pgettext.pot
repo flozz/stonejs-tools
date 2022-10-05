@@ -1,0 +1,169 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2022-10-05 10:44:05+0200\n"
+"PO-Revision-Date: 2022-10-05 10:44:05+0200\n"
+"Language: C\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: test/fixtures/pgettext.js:15
+msgctxt "translatable context 1"
+msgid "translatable 1"
+msgstr ""
+
+#: test/fixtures/pgettext.js:16
+msgctxt "translatable context 2"
+msgid "translatable 2"
+msgstr ""
+
+#: test/fixtures/pgettext.js:18
+msgctxt "translatable context 3"
+msgid "translatable 3"
+msgstr ""
+
+#: test/fixtures/pgettext.js:21
+msgctxt "translatable context 4"
+msgid "translatable 4"
+msgstr ""
+
+#: test/fixtures/pgettext.js:23
+msgctxt "translatable context 5"
+msgid "translatable 5"
+msgstr ""
+
+#: test/fixtures/pgettext.js:24
+msgctxt "translatable context 6"
+msgid "translatable 6"
+msgstr ""
+
+#: test/fixtures/pgettext.js:25
+msgctxt "translatable context 7"
+msgid "translatable 7"
+msgstr ""
+
+#: test/fixtures/pgettext.js:26
+msgctxt "translatable context 8"
+msgid "translatable 8"
+msgstr ""
+
+#: test/fixtures/pgettext.js:28
+msgctxt "translatable context 9"
+msgid "translatable 9"
+msgstr ""
+
+#: test/fixtures/pgettext.js:29
+msgctxt "translatable context 10"
+msgid "translatable 10"
+msgstr ""
+
+#: test/fixtures/pgettext.js:30
+msgctxt "translatable context 11"
+msgid "translatable 11"
+msgstr ""
+
+#: test/fixtures/pgettext.js:31
+msgctxt "translatable context 12"
+msgid "translatable 12"
+msgstr ""
+
+#: test/fixtures/pgettext.js:32
+msgctxt "translatable context 13"
+msgid "translatable 13"
+msgstr ""
+
+#: test/fixtures/pgettext.js:33
+msgctxt "translatable context 14"
+msgid "translatable 14"
+msgstr ""
+
+#: test/fixtures/pgettext.js:34
+msgctxt "translatable context 15"
+msgid "translatable 15"
+msgstr ""
+
+#: test/fixtures/pgettext.js:39
+msgctxt "translatable context 17"
+msgid "translatable 17"
+msgstr ""
+
+#: test/fixtures/pgettext.js:50
+msgctxt "translatable context 18"
+msgid "translatable 18"
+msgstr ""
+
+#: test/fixtures/pgettext.js:61
+msgctxt "excaped context \" 1"
+msgid "escaped \" 1"
+msgstr ""
+
+#: test/fixtures/pgettext.js:62
+msgctxt "excaped context ' 2"
+msgid "escaped ' 2"
+msgstr ""
+
+#: test/fixtures/pgettext.js:63
+msgctxt "excaped context \\ 3"
+msgid "escaped \\ 3"
+msgstr ""
+
+#: test/fixtures/pgettext.js:64
+msgctxt "excaped context \t 4"
+msgid "escaped \t 4"
+msgstr ""
+
+#: test/fixtures/pgettext.js:65
+msgctxt ""
+"excaped context \n"
+" 5"
+msgid ""
+"escaped \n"
+" 5"
+msgstr ""
+
+#: test/fixtures/pgettext.js:68
+msgctxt "excaped context 6"
+msgid "escaped 6"
+msgstr ""
+
+#: test/fixtures/pgettext.js:72
+msgctxt "excaped context @ 7"
+msgid "escaped @ 7"
+msgstr ""
+
+#: test/fixtures/pgettext.js:77
+msgctxt "special context 1 «↑éÉ☺»"
+msgid "special 1 «↑éÉ☺»"
+msgstr ""
+
+#: test/fixtures/pgettext.js:82
+#: test/fixtures/pgettext.js:83
+msgctxt "duplicated context"
+msgid "duplicated"
+msgstr ""
+
+#: test/fixtures/pgettext.js:87
+msgctxt "same context"
+msgid "same 1"
+msgstr ""
+
+#: test/fixtures/pgettext.js:88
+msgctxt "same context"
+msgid "same 2"
+msgstr ""
+
+#: test/fixtures/pgettext.js:92
+msgctxt "es6-context-1"
+msgid "es6-1"
+msgstr ""
+
+#: test/fixtures/pgettext.js:93
+msgctxt "es6-context-2"
+msgid "es6-2"
+msgstr ""
+
+#: test/fixtures/pgettext.js:93
+msgctxt "es6-context-3"
+msgid "es6-3"
+msgstr ""
