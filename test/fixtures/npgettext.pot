@@ -1,0 +1,204 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2022-10-05 12:00:13+0200\n"
+"PO-Revision-Date: 2022-10-05 12:00:13+0200\n"
+"Language: C\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: test/fixtures/npgettext.js:10
+msgid "nope context 6"
+msgid_plural "nope 6"
+msgstr[0] ""
+msgstr[1] ""
+
+#: test/fixtures/npgettext.js:15
+msgid "translatable context 1"
+msgid_plural "translatable 1"
+msgstr[0] ""
+msgstr[1] ""
+
+#: test/fixtures/npgettext.js:16
+msgid "translatable context 2"
+msgid_plural "translatable 2"
+msgstr[0] ""
+msgstr[1] ""
+
+#: test/fixtures/npgettext.js:18
+msgid "translatable context 3"
+msgid_plural "translatable 3"
+msgstr[0] ""
+msgstr[1] ""
+
+#: test/fixtures/npgettext.js:22
+msgid "translatable context 4"
+msgid_plural "translatable 4"
+msgstr[0] ""
+msgstr[1] ""
+
+#: test/fixtures/npgettext.js:24
+msgid "translatable context 5"
+msgid_plural "translatable 5"
+msgstr[0] ""
+msgstr[1] ""
+
+#: test/fixtures/npgettext.js:25
+msgid "translatable context 6"
+msgid_plural "translatable 6"
+msgstr[0] ""
+msgstr[1] ""
+
+#: test/fixtures/npgettext.js:26
+msgid "translatable context 7"
+msgid_plural "translatable 7"
+msgstr[0] ""
+msgstr[1] ""
+
+#: test/fixtures/npgettext.js:27
+msgid "translatable context 8"
+msgid_plural "translatable 8"
+msgstr[0] ""
+msgstr[1] ""
+
+#: test/fixtures/npgettext.js:29
+msgid "translatable context 9"
+msgid_plural "translatable 9"
+msgstr[0] ""
+msgstr[1] ""
+
+#: test/fixtures/npgettext.js:30
+msgid "translatable context 10"
+msgid_plural "translatable 10"
+msgstr[0] ""
+msgstr[1] ""
+
+#: test/fixtures/npgettext.js:31
+msgid "translatable context 11"
+msgid_plural "translatable 11"
+msgstr[0] ""
+msgstr[1] ""
+
+#: test/fixtures/npgettext.js:32
+msgid "translatable context 12"
+msgid_plural "translatable 12"
+msgstr[0] ""
+msgstr[1] ""
+
+#: test/fixtures/npgettext.js:33
+msgid "translatable context 13"
+msgid_plural "translatable 13"
+msgstr[0] ""
+msgstr[1] ""
+
+#: test/fixtures/npgettext.js:34
+msgid "translatable context  14"
+msgid_plural "translatable 14"
+msgstr[0] ""
+msgstr[1] ""
+
+#: test/fixtures/npgettext.js:35
+msgid "translatable context 15"
+msgid_plural "translatable 15"
+msgstr[0] ""
+msgstr[1] ""
+
+#: test/fixtures/npgettext.js:40
+msgid "translatable context 17"
+msgid_plural "translatable 17"
+msgstr[0] ""
+msgstr[1] ""
+
+#: test/fixtures/npgettext.js:55
+msgid "translatable context 18"
+msgid_plural "translatable 18"
+msgstr[0] ""
+msgstr[1] ""
+
+#: test/fixtures/npgettext.js:72
+msgid "escaped context \" 1"
+msgid_plural "escaped \" 1"
+msgstr[0] ""
+msgstr[1] ""
+
+#: test/fixtures/npgettext.js:73
+msgid "escaped context ' 2"
+msgid_plural "escaped ' 2"
+msgstr[0] ""
+msgstr[1] ""
+
+#: test/fixtures/npgettext.js:74
+msgid "escaped context \\ 3"
+msgid_plural "escaped \\ 3"
+msgstr[0] ""
+msgstr[1] ""
+
+#: test/fixtures/npgettext.js:75
+msgid "escaped context \t 4"
+msgid_plural "escaped \t 4"
+msgstr[0] ""
+msgstr[1] ""
+
+#: test/fixtures/npgettext.js:76
+msgid ""
+"escaped context \n"
+" 5"
+msgid_plural ""
+"escaped \n"
+" 5"
+msgstr[0] ""
+msgstr[1] ""
+
+#: test/fixtures/npgettext.js:80
+msgid "escaped context 6"
+msgid_plural "escaped 6"
+msgstr[0] ""
+msgstr[1] ""
+
+#: test/fixtures/npgettext.js:87
+msgid "escaped context @ 7"
+msgid_plural "escaped @ 7"
+msgstr[0] ""
+msgstr[1] ""
+
+#: test/fixtures/npgettext.js:92
+msgid "special context 1"
+msgid_plural "special 1 «↑éÉ☺»"
+msgstr[0] ""
+msgstr[1] ""
+
+#: test/fixtures/npgettext.js:97
+#: test/fixtures/npgettext.js:98
+msgid "duplicated context"
+msgid_plural "duplicated"
+msgstr[0] ""
+msgstr[1] ""
+
+#: test/fixtures/npgettext.js:107
+msgid "es6-context-1"
+msgid_plural "es6-1"
+msgstr[0] ""
+msgstr[1] ""
+
+#: test/fixtures/npgettext.js:108
+msgid "es6-context-2"
+msgid_plural "es6-2"
+msgstr[0] ""
+msgstr[1] ""
+
+#: test/fixtures/npgettext.js:108
+msgid "es6-context-3"
+msgid_plural "es6-3"
+msgstr[0] ""
+msgstr[1] ""
+
+#: test/fixtures/npgettext.js:102
+msgctxt "same context"
+msgid "same 1"
+msgstr ""
+
+#: test/fixtures/npgettext.js:103
+msgctxt "same context"
+msgid "same 2"
+msgstr ""
