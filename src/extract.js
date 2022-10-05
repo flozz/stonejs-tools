@@ -25,6 +25,8 @@ var extract = {};
  *     {
  *         'functions': ["_", "gettext", "lazyGettext"],   // The name of the gettext functions
  *         'pluralFunctions': ["ngettext", "lazyNgettext"],   // The name of the ngettext functions
+ *         'contextFunctions': ["pgettext", "lazyPgettext"],   // The name of the pgettext functions
+ *         'pluralContextFunctions': ["npgettext", "lazyNpgettext"],   // The name of the npgettext functions
  *         'quiet': false   // If true: do not output logs
  *     }
  *
@@ -48,6 +50,18 @@ extract.main = function(jsFiles, output, options, callback) {
     }
     else if (typeof options.pluralFunctions == "string") {
         options.pluralFunctions = options.pluralFunctions.split(",");
+    }
+    if (options.contextFunctions === undefined) {
+        options.contextFunctions = ["pgettext", "lazyPgettext"];
+    }
+    else if (typeof options.contextFunctions == "string") {
+        options.contextFunctions = options.contextFunctions.split(",");
+    }
+    if (options.pluralContextFunctions === undefined) {
+        options.pluralContextFunctions = ["npgettext", "lazyNpgettext"];
+    }
+    else if (typeof options.pluralContextFunctions == "string") {
+        options.pluralContextFunctions = options.pluralContextFunctions.split(",");
     }
     callback = callback || function(){};
 
@@ -86,7 +100,7 @@ extract.main = function(jsFiles, output, options, callback) {
                     }
                     else if (["jsx"].indexOf(ext) >= 0) {
                         try {
-                            extractedStrings = extract.extractJsStrings(data.toString(), options.functions, options.pluralFunctions, true);
+                            extractedStrings = extract.extractJsStrings(data.toString(), options.functions, options.pluralFunctions, options.contextFunctions, options.pluralContextFunctions, true);
                         } catch (error) {
                             helpers.warn(
                                 "Line " + error.lineNumber +
@@ -102,7 +116,7 @@ extract.main = function(jsFiles, output, options, callback) {
                     }
                     else {
                         try {
-                            extractedStrings = extract.extractJsStrings(data.toString(), options.functions, options.pluralFunctions, false);
+                            extractedStrings = extract.extractJsStrings(data.toString(), options.functions, options.pluralFunctions, options.contextFunctions, options.pluralContextFunctions, false);
                         } catch (error) {
                             helpers.warn(
                                 "Line " + error.lineNumber +
@@ -120,8 +134,11 @@ extract.main = function(jsFiles, output, options, callback) {
                         if (strings[str] === undefined) {
                             strings[str] = { refs: [] };
                         }
-                        if(extractedStrings[str].msgid_plural) {
+                        if (extractedStrings[str].msgid_plural) {
                             strings[str].msgid_plural = extractedStrings[str].msgid_plural;
+                        }
+                        if (extractedStrings[str].msgctxt) {
+                            strings[str].msgctxt = extractedStrings[str].msgctxt;
                         }
                         for (var i=0 ; i<extractedStrings[str].refs.length ; i++) {
                             strings[str].refs.push({
@@ -159,12 +176,14 @@ extract.main = function(jsFiles, output, options, callback) {
  * @method extractJsStrings
  * @static
  * @param {String} source The Javascript source code.
- * @param {string[]} functionsNames The name of th etranslation functions to search in the source.
+ * @param {string[]} functionsNames The name of the translation functions to search in the source.
  * @param {string[]} pluralFunctionsNames The name of the translation functions with plural support.
+ * @param {string[]} contextFunctionsNames The name of the translation functions with context support.
+ * @param {string[]} contextPluralFunctionsNames The name of the translation functions with plural and context support.
  * @param {boolean} [isJsx] whether source file is jsx
  * @return {Object} Translatable strings `{ <string>: [<lines>] }`.
  */
-extract.extractJsStrings = function(source, functionsNames, pluralFunctionsNames, isJsx) {
+extract.extractJsStrings = function(source, functionsNames, pluralFunctionsNames, contextFunctionsNames, pluralContextFunctionsNames, isJsx) {
     isJsx = isJsx || false;
     var strings = {};
     var ast = espree.parse(source, {
@@ -182,47 +201,66 @@ extract.extractJsStrings = function(source, functionsNames, pluralFunctionsNames
         return new Function("return " + str + ";")();  // jshint ignore:line
     }
 
-    var f_fn = false;  // In function flag
-    var f_sp = false;  // In parenthesis flag
-    var f_isPlural = false; // plural forms function flag
-    var f_findPlural = false; // Find plural message id
-    var msgBuff = true;   // Buff to concat splitted strings
-    var msgid; // msgid
-    var line; // msgid line
-    var msgid_plural;
+    var f_fn = false;         // In function flag
+    var f_sp = false;         // In parenthesis flag
+    var f_isPlural = false;   // plural forms function flag
+    var f_isContext = false;  // context function flag
+    var f_findPlural = false; // Find plural message
+    var f_findMsgid = false;  // Find message id after context if found
+    var msgBuff = true;       // Buff to concat splitted strings
+    var msgid;                // msgid
+    var line;                 // msgid line
+    var msgid_plural;         // plural of the msgid string
+    var msgctxt;               // context of the msgid string
     function pushString() {
         if (strings[msgid] === undefined) {
             strings[msgid] = {};
         }
-        if(strings[msgid].refs === undefined) {
+        if (strings[msgid].refs === undefined) {
             strings[msgid].refs = [];
         }
         strings[msgid].refs.push(line);
-        if(f_isPlural) {
+        if (f_isPlural) {
             strings[msgid].msgid_plural = msgid_plural;
+        }
+        if (f_isContext) {
+            strings[msgid].msgctxt = msgctxt;
         }
     }
     function stop() {
         f_fn = false;
         f_sp = false;
         f_isPlural = false;
+        f_isContext = false;
         f_findPlural = false;
+        f_findMsgid = false;
         msgBuff = "";
         msgid = undefined;
         line = undefined;
         msgid_plural = undefined;
+        msgctxt = undefined;
     }
     for (var i=0 ; i<ast.tokens.length ; i++) {
 
         // ?
         if (!f_fn && !f_sp) {
             if (ast.tokens[i].type == "Identifier") {
-                if(functionsNames.indexOf(ast.tokens[i].value) > -1) {
+                if (functionsNames.indexOf(ast.tokens[i].value) > -1) {
                     f_fn = true;
-                } else if(pluralFunctionsNames.indexOf(ast.tokens[i].value) > -1) {
+                } else if (pluralFunctionsNames.indexOf(ast.tokens[i].value) > -1) {
                     f_fn = true;
                     f_isPlural = true;
                     f_findPlural = false;
+                } else if (contextFunctionsNames.indexOf(ast.tokens[i].value) > -1) {
+                    f_fn = true;
+                    f_isContext = true;
+                    f_findMsgid = false;
+                } else if (pluralContextFunctionsNames.indexOf(ast.tokens[i].value) > -1) {
+                    f_fn = true;
+                    f_isPlural = true;
+                    f_isContext = true;
+                    f_findPlural = false;
+                    f_findMsgid = false;
                 }
             }
         }
@@ -251,19 +289,60 @@ extract.extractJsStrings = function(source, functionsNames, pluralFunctionsNames
                 stop();
             }
             else {
-                if(f_isPlural) {
-                    if(f_findPlural) {
+                if (f_isPlural) {
+                    // ngettext
+                    if (f_findPlural) {
+                        // second paramter: msgid_plural
                         msgid_plural = msgBuff;
                         pushString();
                         stop();
                     } else {
+                        // first parameter: msgid
                         msgid = msgBuff;
                         line = ast.tokens[i].loc.start.line;
                         msgBuff = "";
                         f_findPlural = true;
                     }
 
+                } else if (f_isContext) {
+                    if (f_isPlural) {
+                        // npgettext
+                        if (f_findPlural) {
+                            // third parameter: msgid_plural
+                            msgid_plural = msgBuff;
+                            pushString();
+                            stop();
+                        } else if (f_findMsgid) {
+                            // second parameter: msgid
+                            msgid = msgBuff;
+                            msgBuff = "";
+                            f_findPlural = true;
+                        } else {
+                            // first parameter: context
+                            msgctxt = msgBuff;
+                            line = ast.tokens[i].loc.start.line;
+                            msgBuff = "";
+                            f_findMsgid = true;
+                        }
+
+                    } else {
+                        // pgettext
+                        if (f_findMsgid) {
+                            // second parameter: msgid
+                            msgid = msgBuff;
+                            pushString();
+                            stop();
+                        } else {
+                            // first parameter: context
+                            msgctxt = msgBuff;
+                            line = ast.tokens[i].loc.start.line;
+                            msgBuff = "";
+                            f_findMsgid = true;
+                        }
+                    }
+
                 } else {
+                    // gettext
                     msgid = msgBuff;
                     line = ast.tokens[i].loc.start.line;
                     pushString();
@@ -331,7 +410,9 @@ extract.generatePo = function(strings) {
         translations: {
             "": {
                 // "<msgid>" {
+                //     msgctxt: "<msgctxt>",
                 //     msgid: "<msgid>",
+                //     msgid_plural: "<msgid_plural>",
                 //     msgstr: ["<msgstr>"],
                 //     comments: {
                 //         reference: "<ref1>\n<ref2>"
@@ -342,8 +423,11 @@ extract.generatePo = function(strings) {
     };
 
     for (var msgid in strings) {
+        var msgctxt = strings[msgid].msgctxt || "";
         var msgid_plural = strings[msgid].msgid_plural;
-        data.translations[""][msgid] = {
+        if (!data.translations[msgctxt]) data.translations[msgctxt] = {};
+        data.translations[msgctxt][msgid] = {
+            msgctxt: msgctxt || undefined,
             msgid: msgid,
             msgid_plural: msgid_plural || undefined,
             msgstr: msgid_plural ? ["", ""] : "",
