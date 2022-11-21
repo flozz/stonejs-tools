@@ -211,7 +211,7 @@ extract.extractJsStrings = function(source, functionsNames, pluralFunctionsNames
     var msgid;                // msgid
     var line;                 // msgid line
     var msgid_plural;         // plural of the msgid string
-    var msgctxt;               // context of the msgid string
+    var msgctxt;              // context of the msgid string
     function pushString() {
         if (strings[msgid] === undefined) {
             strings[msgid] = {};
@@ -289,22 +289,7 @@ extract.extractJsStrings = function(source, functionsNames, pluralFunctionsNames
                 stop();
             }
             else {
-                if (f_isPlural) {
-                    // ngettext
-                    if (f_findPlural) {
-                        // second paramter: msgid_plural
-                        msgid_plural = msgBuff;
-                        pushString();
-                        stop();
-                    } else {
-                        // first parameter: msgid
-                        msgid = msgBuff;
-                        line = ast.tokens[i].loc.start.line;
-                        msgBuff = "";
-                        f_findPlural = true;
-                    }
-
-                } else if (f_isContext) {
+                if (f_isContext) {
                     if (f_isPlural) {
                         // npgettext
                         if (f_findPlural) {
@@ -339,6 +324,21 @@ extract.extractJsStrings = function(source, functionsNames, pluralFunctionsNames
                             msgBuff = "";
                             f_findMsgid = true;
                         }
+                    }
+
+                } else if (f_isPlural) {
+                    // ngettext
+                    if (f_findPlural) {
+                        // second paramter: msgid_plural
+                        msgid_plural = msgBuff;
+                        pushString();
+                        stop();
+                    } else {
+                        // first parameter: msgid
+                        msgid = msgBuff;
+                        line = ast.tokens[i].loc.start.line;
+                        msgBuff = "";
+                        f_findPlural = true;
                     }
 
                 } else {
