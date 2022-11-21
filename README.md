@@ -34,6 +34,9 @@ To extract translatable strings from your Javascript and HTML sources, you shoul
 The available options are:
 
 * `--funtions`: list of the `gettext` function names (default=`_,gettext,lazyGettext`)
+* `--pluralFunctions`: list of the `ngettext` function names  (default=`ngettext,lazyNgettext`)
+* `--contextFunctions`: list of the `pgettext` function names  (default=`pgettext,lazyPgettext`)
+* `--pluralContextFunctions`: list of the `npgettext` function names  (default=`npgettext,lazyNpgettext`)
 * `--quiet`, `-q`: do not output progress log to stdout
 
 Examples:
