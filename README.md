@@ -29,7 +29,7 @@ To extract translatable strings from your Javascript and HTML sources, you shoul
     stonejs extract [options] <source js/html> <output pot>
 
 * `<source js/html>`: all Javascript and HTML files from which translatable string will be extracted (globbing allowed)
-* `<output pot>: the output translation template (`.pot`)
+* `<output pot>`: the output translation template (`.pot`)
 
 The available options are:
 
