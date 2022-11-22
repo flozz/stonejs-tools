@@ -179,7 +179,7 @@ extract.main = function(jsFiles, output, options, callback) {
  * @param {string[]} functionsNames The name of the translation functions to search in the source.
  * @param {string[]} pluralFunctionsNames The name of the translation functions with plural support.
  * @param {string[]} contextFunctionsNames The name of the translation functions with context support.
- * @param {string[]} contextPluralFunctionsNames The name of the translation functions with plural and context support.
+ * @param {string[]} pluralContextFunctionsNames The name of the translation functions with plural and context support.
  * @param {boolean} [isJsx] whether source file is jsx
  * @return {Object} Translatable strings `{ <string>: [<lines>] }`.
  */
