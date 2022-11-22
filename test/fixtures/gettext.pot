@@ -3,8 +3,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2015-07-15 13:38:39+0200\n"
-"PO-Revision-Date: 2015-07-15 13:38:39+0200\n"
+"POT-Creation-Date: 2022-11-21 17:37:44+0100\n"
+"PO-Revision-Date: 2022-11-21 17:37:44+0100\n"
 "Language: C\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
@@ -57,68 +57,80 @@ msgid "translatable 12"
 msgstr ""
 
 #: test/fixtures/gettext.js:31
-msgid "translatable 13"
-msgstr ""
-
-#: test/fixtures/gettext.js:32
 msgid "translatable 14"
 msgstr ""
 
-#: test/fixtures/gettext.js:33
+#: test/fixtures/gettext.js:32
 msgid "translatable 15"
 msgstr ""
 
-#: test/fixtures/gettext.js:34
+#: test/fixtures/gettext.js:33
 msgid "translatable 16"
 msgstr ""
 
-#: test/fixtures/gettext.js:39
+#: test/fixtures/gettext.js:38
 msgid "translatable 17"
 msgstr ""
 
-#: test/fixtures/gettext.js:46
+#: test/fixtures/gettext.js:45
 msgid "translatable 18"
 msgstr ""
 
-#: test/fixtures/gettext.js:51
+#: test/fixtures/gettext.js:50
 msgid "escaped \" 1"
 msgstr ""
 
-#: test/fixtures/gettext.js:52
+#: test/fixtures/gettext.js:51
 msgid "escaped ' 2"
 msgstr ""
 
-#: test/fixtures/gettext.js:53
+#: test/fixtures/gettext.js:52
 msgid "escaped \\ 3"
 msgstr ""
 
-#: test/fixtures/gettext.js:54
+#: test/fixtures/gettext.js:53
 msgid "escaped \t 4"
 msgstr ""
 
-#: test/fixtures/gettext.js:55
+#: test/fixtures/gettext.js:54
 msgid ""
 "escaped \n"
 " 5"
 msgstr ""
 
-#: test/fixtures/gettext.js:59
+#: test/fixtures/gettext.js:58
 msgid "escaped 6"
 msgstr ""
 
-#: test/fixtures/gettext.js:60
+#: test/fixtures/gettext.js:59
 msgid "escaped @ 7"
 msgstr ""
 
-#: test/fixtures/gettext.js:61
-msgid "escaped # 7"
-msgstr ""
-
-#: test/fixtures/gettext.js:66
+#: test/fixtures/gettext.js:64
 msgid "special 1 «↑éÉ☺»"
 msgstr ""
 
-#: test/fixtures/gettext.js:71
-#: test/fixtures/gettext.js:72
+#: test/fixtures/gettext.js:69
+#: test/fixtures/gettext.js:70
 msgid "duplicated"
+msgstr ""
+
+#: test/fixtures/gettext.js:74
+msgid "es6-1"
+msgstr ""
+
+#: test/fixtures/gettext.js:75
+msgid "es6-2"
+msgstr ""
+
+#: test/fixtures/gettext.js:75
+msgid "es6-3"
+msgstr ""
+
+#: test/fixtures/gettext.js:78
+msgid "translatable noop 1"
+msgstr ""
+
+#: test/fixtures/gettext.js:79
+msgid "translatable noop 2"
 msgstr ""
