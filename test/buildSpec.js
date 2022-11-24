@@ -47,6 +47,37 @@ describe("stonejs build:", function() {
             });
         });
 
+        describe("context from message", function() {
+            var poFile = "test/fixtures/pgettext-fr.po";
+            var poData = fs.readFileSync(poFile);
+            it("has multiple context keys for a given string", function() {
+                var catalogs = build.poToJson(poData);
+                expect(catalogs.fr).to.have.key("messages");
+                expect(catalogs.fr.messages).to.have.key("Back");
+                expect(catalogs.fr.messages.Back).to.have.keys("going back in a menu", "back of an object");
+                expect(catalogs.fr.messages.Back["going back in a menu"]).to.contain("Retour");
+                expect(catalogs.fr.messages.Back["back of an object"]).to.contain("Arrière");
+            });
+        });
+
+        describe("context with plural form", function() {
+            var poFile = "test/fixtures/npgettext-fr.po";
+            var poData = fs.readFileSync(poFile);
+            it("has the plural messages", function() {
+                var catalogs = build.poToJson(poData);
+                expect(catalogs.fr).to.have.key("messages");
+                expect(catalogs.fr.messages).to.have.key("File");
+                expect(catalogs.fr.messages.File).to.have.keys("computer file", "*");
+                expect(catalogs.fr.messages.File["computer file"])
+                    .to.contain("Fichier")
+                    .and.to.contain("Fichiers");
+            });
+            it("can have a non contextual string with the same id as a contextual one", function() {
+                var catalogs = build.poToJson(poData);
+                expect(catalogs.fr.messages.File["*"]).to.contain("Fichier");
+            });
+        });
+
     });
 
     describe("build.main", function() {
