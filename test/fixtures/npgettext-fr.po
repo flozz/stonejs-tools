@@ -10,6 +10,7 @@ msgstr ""
 
 msgctxt "computer file"
 msgid "File"
+msgid_plural "Files"
 msgstr[0] "Fichier"
 msgstr[1] "Fichiers"
 
