@@ -30,7 +30,7 @@ describe("stonejs build:", function() {
                 .and.to.have.key("translatable 3")
                 .and.to.have.key("translatable 4")
                 .and.not.to.have.key("removed 2");
-            expect(catalogs.fr.messages["translatable 1"]).to.contain("traductible 1");
+            expect(catalogs.fr.messages["translatable 1"]['*'][0]).to.contain("traductible 1");
         });
 
         describe("plural form messages", function() {
@@ -41,7 +41,7 @@ describe("stonejs build:", function() {
                 expect(catalogs.cs).to.have.key("messages");
                 expect(catalogs.cs.messages)
                     .to.have.key("horse");
-                expect(catalogs.cs.messages.horse).to.contain("kůň")
+                expect(catalogs.cs.messages.horse['*']).to.contain("kůň")
                     .and.to.contain("koně")
                     .and.to.contain("koní");
             });
