@@ -3,8 +3,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-10-05 10:44:05+0200\n"
-"PO-Revision-Date: 2022-10-05 10:44:05+0200\n"
+"POT-Creation-Date: 2022-11-24 13:18:06+0100\n"
+"PO-Revision-Date: 2022-11-24 13:18:06+0100\n"
 "Language: C\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
@@ -84,13 +84,13 @@ msgid "translatable 15"
 msgstr ""
 
 #: test/fixtures/pgettext.js:39
-msgctxt "translatable context 17"
-msgid "translatable 17"
+msgctxt "translatable context 16"
+msgid "translatable 16"
 msgstr ""
 
 #: test/fixtures/pgettext.js:50
-msgctxt "translatable context 18"
-msgid "translatable 18"
+msgctxt "translatable context 17"
+msgid "translatable 17"
 msgstr ""
 
 #: test/fixtures/pgettext.js:61

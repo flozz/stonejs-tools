@@ -36,10 +36,10 @@ pgettext(
     "trans" +
     "latable" +
     " conte" +
-    "xt 17",
+    "xt 16",
     "trans" +
     "latable " +
-    "17"
+    "16"
 );
 pgettext(
     "trans" +
@@ -47,12 +47,12 @@ pgettext(
     "latable " +
     /* "bar" + */
     "context " +
-    "18",
+    "17",
     "trans" +
     // "foo" +
     "latable " +
     /* "bar" + */
-    "18"
+    "17"
 );
 
 

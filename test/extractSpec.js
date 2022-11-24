@@ -415,6 +415,75 @@ describe("stonejs extract:", function() {
                 done();
             });
         });
+
+        it("extracts strings from js files and generates the po template file, with context support", function(done) {
+            extract.main(["test/fixtures/pgettext.js"], outputFile, {quiet: true}, function(error) {
+                expect(error).not.to.be.ok();
+                expect(helpers.isFile(outputFile)).to.be.ok();
+                expect(fs.readFileSync(outputFile).toString())
+                    .not.to.contain("nope context")
+                    .and.not.to.contain("nope")
+                    .and.to.contain("translatable context 1")
+                    .and.to.contain("translatable 1")
+                    .and.to.contain("translatable context 2")
+                    .and.to.contain("translatable 2")
+                    .and.to.contain("translatable context 3")
+                    .and.to.contain("translatable 3")
+                    .and.to.contain("translatable context 4")
+                    .and.to.contain("translatable 4")
+                    .and.to.contain("translatable context 5")
+                    .and.to.contain("translatable 5")
+                    .and.to.contain("translatable context 6")
+                    .and.to.contain("translatable 6")
+                    .and.to.contain("translatable context 7")
+                    .and.to.contain("translatable 7")
+                    .and.to.contain("translatable context 8")
+                    .and.to.contain("translatable 8")
+                    .and.to.contain("translatable context 9")
+                    .and.to.contain("translatable 9")
+                    .and.to.contain("translatable context 10")
+                    .and.to.contain("translatable 10")
+                    .and.to.contain("translatable context 11")
+                    .and.to.contain("translatable 11")
+                    .and.to.contain("translatable context 12")
+                    .and.to.contain("translatable 12")
+                    .and.to.contain("translatable context 13")
+                    .and.to.contain("translatable 13")
+                    .and.to.contain("translatable context 14")
+                    .and.to.contain("translatable 14")
+                    .and.to.contain("translatable context 15")
+                    .and.to.contain("translatable 15")
+                    .and.to.contain("translatable context 16")
+                    .and.to.contain("translatable 16")
+                    .and.to.contain("translatable context 17")
+                    .and.to.contain("translatable 17")
+                    .and.to.contain("excaped context \\\" 1")
+                    .and.to.contain("escaped \\\" 1")
+                    .and.to.contain("excaped context ' 2")
+                    .and.to.contain("escaped ' 2")
+                    .and.to.contain("excaped context \\\\ 3")
+                    .and.to.contain("escaped \\\\ 3")
+                    .and.to.contain("excaped context \\t 4")
+                    .and.to.contain("escaped \\t 4")
+                    .and.to.contain("excaped context \\n")
+                    .and.to.contain("escaped \\n")
+                    .and.to.contain("excaped context 6")
+                    .and.to.contain("escaped 6")
+                    .and.to.contain("excaped context @ 7")
+                    .and.to.contain("special context 1 «↑éÉ☺»")
+                    .and.to.contain("escaped @ 7")
+                    .and.to.contain("special 1 «↑éÉ☺»")
+                    .and.to.contain("duplicated context")
+                    .and.to.contain("duplicated")
+                    .and.to.contain("same context")
+                    .and.to.contain("same 1")
+                    .and.to.contain("same 2")
+                    .and.to.contain("es6-1")
+                    .and.to.contain("es6-2")
+                    .and.to.contain("es6-3");
+                done();
+            });
+        });
     });
 
 });
