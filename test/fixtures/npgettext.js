@@ -31,20 +31,20 @@ npgettext("translatable context " + "10", "translatable " + "10", "translatable 
 npgettext("translatable context " + 11, "translatable " + 11, "translatable plural " + 11);
 npgettext("translatable context " + 0x0C, "translatable " + 0x0C, "translatable plural " + 0x0C);
 npgettext("translatable context " + 1.3e1, "translatable " + 1.3e1, "translatable plural " + 1.3e1);
-npgettext("translatable context " + " " + "14", "translatable" + " " + "14", "translatable" + " " + "plural" + " " + "14");
+npgettext("translatable context" + " " + "14", "translatable" + " " + "14", "translatable" + " " + "plural" + " " + "14");
 npgettext("translatable context " /* comment */ + "15", "translatable " /* comment */ + "15", "translatable plural " /* comment */ + "15");
 npgettext(
     "trans" +
     "latable " +
     "context " +
-    "17",
+    "16",
     "trans" +
     "latable " +
-    "17",
+    "16",
     "trans" +
     "latable " +
     "plural " +
-    "17"
+    "16"
 );
 npgettext(
     "trans" +
@@ -52,18 +52,18 @@ npgettext(
     "latable " +
     /* "bar" + */
     "context " +
-    "18",
+    "17",
     "trans" +
     // "foo" +
     "latable " +
     /* "bar" + */
-    "18",
+    "17",
     "trans" +
     // "foo" +
     "latable " +
     /* "bar" + */
     "plural " +
-    "18"
+    "17"
 );
 
 
@@ -99,8 +99,8 @@ npgettext("duplicated context", "duplicated", "duplicated plural");
 
 // Same context
 
-pgettext("same context", "same 1", "same plural 1");
-pgettext("same context", "same 2", "same plural 2");
+npgettext("same context", "same 1", "same plural 1");
+npgettext("same context", "same 2", "same plural 2");
 
 // Es6
 
