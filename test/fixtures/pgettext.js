@@ -58,18 +58,18 @@ pgettext(
 
 // Escaped
 
-pgettext("excaped context \" 1", "escaped \" 1");
-pgettext('excaped context \' 2', 'escaped \' 2');
-pgettext("excaped context \\ 3", "escaped \\ 3");
-pgettext("excaped context \t 4", "escaped \t 4");
-pgettext("excaped context \n 5", "escaped \n 5");
+pgettext("escaped context \" 1", "escaped \" 1");
+pgettext('escaped context \' 2', 'escaped \' 2');
+pgettext("escaped context \\ 3", "escaped \\ 3");
+pgettext("escaped context \t 4", "escaped \t 4");
+pgettext("escaped context \n 5", "escaped \n 5");
 pgettext(
-"excaped context \
+"escaped context \
 6", 
 "escaped \
 6"
 );
-pgettext("excaped context \x40 7", "escaped \x40 7");  // \x40 = "@"
+pgettext("escaped context \x40 7", "escaped \x40 7");  // \x40 = "@"
 
 
 // Special chars
