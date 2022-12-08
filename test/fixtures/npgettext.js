@@ -97,10 +97,18 @@ npgettext("special context 1", "special 1 «↑éÉ☺»", "special plural 1 «�
 npgettext("duplicated context", "duplicated", "duplicated plural");
 npgettext("duplicated context", "duplicated", "duplicated plural");
 
+
+// Same string, two contexts
+
+npgettext("context one", "same string", "same string plural");
+npgettext("context two", "same string", "same string plural");
+
+
 // Same context
 
 npgettext("same context", "same 1", "same plural 1");
 npgettext("same context", "same 2", "same plural 2");
+
 
 // Es6
 

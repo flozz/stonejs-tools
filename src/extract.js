@@ -137,8 +137,11 @@ extract.main = function(jsFiles, output, options, callback) {
                         if (extractedStrings[str].msgid_plural) {
                             strings[str].msgid_plural = extractedStrings[str].msgid_plural;
                         }
-                        if (extractedStrings[str].msgctxt) {
-                            strings[str].msgctxt = extractedStrings[str].msgctxt;
+                        if (strings[str].msgctxts === undefined) {
+                            strings[str].msgctxts = [];
+                        }
+                        for (var msgctxt of extractedStrings[str].msgctxts) {
+                            strings[str].msgctxts.push(msgctxt);
                         }
                         for (var i=0 ; i<extractedStrings[str].refs.length ; i++) {
                             strings[str].refs.push({
@@ -223,8 +226,11 @@ extract.extractJsStrings = function(source, functionsNames, pluralFunctionsNames
         if (f_isPlural) {
             strings[msgid].msgid_plural = msgid_plural;
         }
-        if (f_isContext) {
-            strings[msgid].msgctxt = msgctxt;
+        if (strings[msgid].msgctxts === undefined) {
+            strings[msgid].msgctxts = [];
+        }
+        if (f_isContext && !strings[msgid].msgctxts.includes(msgctxt)) {
+            strings[msgid].msgctxts.push(msgctxt);
         }
     }
     function stop() {
@@ -422,8 +428,7 @@ extract.generatePo = function(strings) {
         }
     };
 
-    for (var msgid in strings) {
-        var msgctxt = strings[msgid].msgctxt || "";
+    function _setMessage(msgid, msgctxt) {
         var msgid_plural = strings[msgid].msgid_plural;
         if (!data.translations[msgctxt]) data.translations[msgctxt] = {};
         data.translations[msgctxt][msgid] = {
@@ -435,6 +440,16 @@ extract.generatePo = function(strings) {
                 reference: _buildRef(strings[msgid].refs)
             }
         };
+    }
+
+    for (var msgid in strings) {
+        if (strings[msgid].msgctxts.length) {
+            for (var msgctxt of strings[msgid].msgctxts) {
+                _setMessage(msgid, msgctxt);
+            }
+        } else {
+            _setMessage(msgid, "");
+        }
     }
 
     return gettextParser.po.compile(data).toString();

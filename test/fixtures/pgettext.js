@@ -82,10 +82,18 @@ pgettext("special context 1 «↑éÉ☺»", "special 1 «↑éÉ☺»");
 pgettext("duplicated context", "duplicated");
 pgettext("duplicated context", "duplicated");
 
+
+// Same string, two contexts
+
+pgettext("context one", "same string");
+pgettext("context two", "same string");
+
+
 // Same context
 
 pgettext("same context", "same 1");
 pgettext("same context", "same 2");
+
 
 // Es6
 

@@ -3,8 +3,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-11-24 14:25:30+0100\n"
-"PO-Revision-Date: 2022-11-24 14:25:30+0100\n"
+"POT-Creation-Date: 2022-12-08 17:27:28+0100\n"
+"PO-Revision-Date: 2022-12-08 17:27:28+0100\n"
 "Language: C\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
@@ -197,35 +197,51 @@ msgid_plural "duplicated plural"
 msgstr[0] ""
 msgstr[1] ""
 
-#: test/fixtures/npgettext.js:102
+#: test/fixtures/npgettext.js:103
+#: test/fixtures/npgettext.js:104
+msgctxt "context one"
+msgid "same string"
+msgid_plural "same string plural"
+msgstr[0] ""
+msgstr[1] ""
+
+#: test/fixtures/npgettext.js:103
+#: test/fixtures/npgettext.js:104
+msgctxt "context two"
+msgid "same string"
+msgid_plural "same string plural"
+msgstr[0] ""
+msgstr[1] ""
+
+#: test/fixtures/npgettext.js:109
 msgctxt "same context"
 msgid "same 1"
 msgid_plural "same plural 1"
 msgstr[0] ""
 msgstr[1] ""
 
-#: test/fixtures/npgettext.js:103
+#: test/fixtures/npgettext.js:110
 msgctxt "same context"
 msgid "same 2"
 msgid_plural "same plural 2"
 msgstr[0] ""
 msgstr[1] ""
 
-#: test/fixtures/npgettext.js:107
+#: test/fixtures/npgettext.js:114
 msgctxt "es6-context-1"
 msgid "es6-1"
 msgid_plural "es6-1 plural"
 msgstr[0] ""
 msgstr[1] ""
 
-#: test/fixtures/npgettext.js:108
+#: test/fixtures/npgettext.js:115
 msgctxt "es6-context-2"
 msgid "es6-2"
 msgid_plural "es6-2 plural"
 msgstr[0] ""
 msgstr[1] ""
 
-#: test/fixtures/npgettext.js:108
+#: test/fixtures/npgettext.js:115
 msgctxt "es6-context-3"
 msgid "es6-3"
 msgid_plural "es6-3 plural"
