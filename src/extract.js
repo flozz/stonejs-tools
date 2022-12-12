@@ -278,7 +278,7 @@ extract.extractJsStrings = function(source, functionsNames, pluralFunctionsNames
                 msgBuff = "";
             }
             else {
-                f_fn = false;
+                stop();
             }
         }
 
