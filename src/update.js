@@ -86,26 +86,31 @@ update.updatePo = function(poData, potData) {
     po.headers["po-revision-date"] = helpers.dateFormat(new Date());
     var nplural = helpers.nplurals(po.headers["plural-forms"]);
 
-    for (var msgid in pot.translations[""]) {
-        if (msgid === "") continue;
-        if (po.translations[""][msgid] === undefined) {
-            po.translations[""][msgid] = pot.translations[""][msgid];
-        }
-        else {
-            if (!po.translations[""][msgid].comments) {
-                po.translations[""][msgid].comments = {};
+    for (var msgctxt in pot.translations) {
+        for (var msgid in pot.translations[msgctxt]) {
+            if (msgid === "") continue;
+            if (po.translations[msgctxt] === undefined) {
+                po.translations[msgctxt] = {};
             }
-            po.translations[""][msgid].comments.reference = pot.translations[""][msgid].comments.reference;
-        }
-        var msgid_plural = pot.translations[""][msgid].msgid_plural;
-        if (msgid_plural) {
-            po.translations[""][msgid].msgid_plural = msgid_plural;
-            if (po.translations[""][msgid].msgstr.length !== nplural) {
-                var msgstr = [];
-                for (var i = 0; i < nplural; i++) {
-                    msgstr.push(po.translations[""][msgid].msgstr[i] || "");
+            if (po.translations[msgctxt][msgid] === undefined) {
+                po.translations[msgctxt][msgid] = pot.translations[msgctxt][msgid];
+            }
+            else {
+                if (!po.translations[msgctxt][msgid].comments) {
+                    po.translations[msgctxt][msgid].comments = {};
                 }
-                po.translations[""][msgid].msgstr = msgstr;
+                po.translations[msgctxt][msgid].comments.reference = pot.translations[msgctxt][msgid].comments.reference;
+            }
+            var msgid_plural = pot.translations[msgctxt][msgid].msgid_plural;
+            if (msgid_plural) {
+                po.translations[msgctxt][msgid].msgid_plural = msgid_plural;
+                if (po.translations[msgctxt][msgid].msgstr.length !== nplural) {
+                    var msgstr = [];
+                    for (var i = 0; i < nplural; i++) {
+                        msgstr.push(po.translations[msgctxt][msgid].msgstr[i] || "");
+                    }
+                    po.translations[msgctxt][msgid].msgstr = msgstr;
+                }
             }
         }
     }

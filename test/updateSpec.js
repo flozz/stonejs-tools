@@ -10,17 +10,20 @@ describe("stonejs update:", function() {
     var inputPoFile = "test/fixtures/gettext-fr.po";
 
     describe("update.updatePo", function() {
-        var potData = fs.readFileSync(potFile);
-        var poData = fs.readFileSync(inputPoFile);
 
-        it("updates the po file", function() {
-            expect(update.updatePo(poData, potData))
-                .to.contain('msgstr "traductible 1"')
-                .and.to.contain('msgid "translatable 5"')
-                .and.to.contain('msgid "escaped @ 7"')
-                .and.to.contain('msgid "duplicated"');
-                //.and.to.contain('#~ msgid "removed 1"')
-                //.and.not.to.contain('msgid "removed 1"');
+        describe("updates the po file", function() {
+            var potData = fs.readFileSync(potFile);
+            var poData = fs.readFileSync(inputPoFile);
+
+            it("update single message translation", function() {
+                expect(update.updatePo(poData, potData))
+                    .to.contain('msgstr "traductible 1"')
+                    .and.to.contain('msgid "translatable 5"')
+                    .and.to.contain('msgid "escaped @ 7"')
+                    .and.to.contain('msgid "duplicated"');
+                    //.and.to.contain('#~ msgid "removed 1"')
+                    //.and.not.to.contain('msgid "removed 1"');
+            });
         });
 
         describe("update plural forms", function() {
@@ -46,8 +49,26 @@ describe("stonejs update:", function() {
                     .and.to.contain('msgstr[1] ""')
                     .and.to.contain('msgstr[2] ""');
             });
-
         });
+
+        describe("update string with context", function() {
+            var potFile = "test/fixtures/pgettext.pot";
+            var inputPoFile = "test/fixtures/pgettext-fr.po";
+            var potData = fs.readFileSync(potFile);
+            var poData = fs.readFileSync(inputPoFile);
+
+            it("updates the po file", function() {
+                expect(update.updatePo(poData, potData))
+                    .to.contain('msgctxt "object containing data"')
+                    .and.to.contain('msgid "File"')
+                    .and.to.contain('msgstr ""')
+                    .and.to.contain('msgctxt "action of filing a form"')
+                    .and.to.contain('msgid "File"')
+                    .and.to.contain('msgstr ""');
+            });
+        });
+
+        describe("update string with context and plural forms", function() {});
     });
 
     describe("update.main", function() {

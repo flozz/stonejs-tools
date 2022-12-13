@@ -8,11 +8,13 @@ msgstr ""
 "Language: fr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
+#: test for buildSpec.js
 msgctxt "computer file"
 msgid "File"
 msgid_plural "Files"
 msgstr[0] "Fichier"
 msgstr[1] "Fichiers"
 
+#: test for buildSpec.js
 msgid "File"
 msgstr "Fichier"
