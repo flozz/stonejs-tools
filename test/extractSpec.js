@@ -191,7 +191,7 @@ describe("stonejs extract:", function() {
                 "\n\n_('hello')",
 
                 ["_", "gettext", "lazyGettext"], [], [], []
-            ).hello.refs).to.contain(3);
+            ).hello[""].refs).to.contain(3);
         });
 
         it("can group duplicated translatable string", function() {
@@ -199,7 +199,7 @@ describe("stonejs extract:", function() {
                 "_('hello');\n_('hello');",
 
                 ["_", "gettext", "lazyGettext"], [], [], []
-            ).hello.refs).to.have.length(2);
+            ).hello[""].refs).to.have.length(2);
         });
 
         it("can handle strings with unicode characters", function() {
@@ -214,7 +214,7 @@ describe("stonejs extract:", function() {
             it("can extract singular form as key", function() {
                 expect(extract.extractJsStrings(
                     "ngettext('apple', 'apples', 2)",
-    
+
                     ["_", "gettext", "lazyGettext"], ["ngettext", "lazyNgettext"], [], []
                 )).to.have.key("apple");
             });
@@ -222,18 +222,18 @@ describe("stonejs extract:", function() {
             it("can extract plural form", function() {
                 expect(extract.extractJsStrings(
                     "ngettext('apple', 'apples', 2)",
-    
+
                     ["_", "gettext", "lazyGettext"], ["ngettext", "lazyNgettext"], [], []
-                ).apple.msgid_plural).to.be("apples");
+                ).apple[""].msgid_plural).to.be("apples");
             });
         });
 
         describe("gettext noop support", function() {
-            
+
             it("extract gettext noop", function() {
                 expect(extract.extractJsStrings(
                     "gettext_noop('hello')",
-    
+
                     ["N_", "gettext_noop"], [], [], []
                 )).to.have.key("hello");
             });
@@ -241,9 +241,111 @@ describe("stonejs extract:", function() {
             it("extract gettext noop with shorthand", function() {
                 expect(extract.extractJsStrings(
                     "N_('hello')",
-    
+
                     ["N_", "gettext_noop"], [], [], []
                 )).to.have.key("hello");
+            });
+        });
+
+        describe("context support", function() {
+            it("can extract context", function() {
+                var result = extract.extractJsStrings(
+                    "pgettext('back of an object', 'back');",
+
+                    [], [], ["pgettext", "lazyPgettext"], []
+                );
+                expect(result).to.have.key("back");
+                expect(result.back).to.have.key("back of an object");
+            });
+
+            it("can have two strings with same context", function() {
+                var result = extract.extractJsStrings(
+                    "pgettext('back of an object', 'back'); pgettext('back of an object', 'Back');",
+
+                    [], [], ["pgettext", "lazyPgettext"], []
+                );
+                expect(result).to.have.keys("back", "Back");
+                expect(result.back).to.have.key("back of an object");
+                expect(result.Back).to.have.key("back of an object");
+            });
+
+            it("can have a string with two different contexts", function() {
+                var result = extract.extractJsStrings(
+                    "pgettext('back of an object', 'back'); pgettext('getting back', 'back');",
+
+                    [], [], ["pgettext", "lazyPgettext"], []
+                );
+                expect(result).to.have.key("back");
+                expect(result.back).to.have.keys("back of an object", "getting back");
+            });
+
+            it("can have a string with and without context", function() {
+                var result = extract.extractJsStrings(
+                    "_('back'); pgettext('back of an object', 'back');",
+
+                    ["_", "gettext", "lazyGettext"], [], ["pgettext", "lazyPgettext"], []
+                );
+                expect(Object.keys(result.back)).to.have.length(2)
+                expect(result.back).to.have.keys("", "back of an object");
+            });
+
+            it("doesn't count require in the functions to parse", function() {
+                // was a real bug I had, so to be sure there is no regression
+                var result = extract.extractJsStrings(
+                    "const { pgettext } = require('stonejs'); gettext('coucou');",
+
+                    ["gettext"], [], ["pgettext"], []
+                );
+                expect(result).to.have.key("coucou");
+                expect(result.coucou).to.have.key("");
+            });
+        });
+
+        describe("context and plural support", function() {
+            it("can extract context", function() {
+                var result = extract.extractJsStrings(
+                    "npgettext('context', 'file', 'files');",
+
+                    [], [], [], ["npgettext", "lazyNpgettext"]
+                );
+                expect(result).to.have.key("file");
+                expect(result.file).to.have.key("context");
+                expect(result.file.context.msgid_plural).to.be("files");
+            });
+
+            it("can have two strings with same context", function() {
+                var result = extract.extractJsStrings(
+                    "npgettext('context', 'file', 'files'); npgettext('context', 'apple', 'apples');",
+
+                    [], [], [], ["npgettext", "lazyNpgettext"]
+                );
+                expect(result).to.have.keys("file", "apple");
+                expect(result.file).to.have.key("context");
+                expect(result.apple).to.have.key("context");
+                expect(result.file.context).to.have.key("msgid_plural");
+                expect(result.file.context.msgid_plural).to.be("files");
+                expect(result.apple.context).to.have.key("msgid_plural");
+                expect(result.apple.context.msgid_plural).to.be("apples");
+            });
+
+            it("can have a string with two different contexts", function() {
+                var result = extract.extractJsStrings(
+                    "npgettext('context1', 'file', 'files'); npgettext('context2', 'file', 'files');",
+
+                    [], [], [], ["npgettext", "lazyNpgettext"]
+                );
+                expect(result).to.have.key("file");
+                expect(result.file).to.have.keys("context1", "context2");
+            });
+
+            it("can have a string with and without context", function() {
+                var result = extract.extractJsStrings(
+                    "_('file'); npgettext('context', 'file', 'files');",
+
+                    ["_", "gettext", "lazyGettext"], [], [], ["npgettext", "lazyNpgettext"]
+                );
+                expect(Object.keys(result.file)).to.have.length(2)
+                expect(result.file).to.have.keys("", "context");
             });
         });
     });
@@ -266,12 +368,11 @@ describe("stonejs extract:", function() {
 
     describe("extract.generatePo", function() {
 
-        var strings = {
-            "hello": { refs: [{file: "foo.js", line: 1}] },
-            "world": { refs: [{file: "foo.js", line: 2}, {file: "foobaz.js", line: 42}] }
-        };
-
         it("generates the po file", function() {
+            var strings = {
+                "hello": { "": { refs: [{file: "foo.js", line: 1}] }},
+                "world": { "": { refs: [{file: "foo.js", line: 2}, {file: "foobaz.js", line: 42}] }}
+            };
             expect(extract.generatePo(strings))
                 .to.contain('#: foo.js:1')
                 .and.to.contain('msgid "hello"')
@@ -282,7 +383,7 @@ describe("stonejs extract:", function() {
 
         it("handles plural form", function() {
             var pluralStrings = {
-                "apple": { msgid_plural: "apples", refs: [{file: "foo.js", line: 1}] },
+                "apple": { "": { msgid_plural: "apples", refs: [{file: "foo.js", line: 1}] }},
             };
             expect(extract.generatePo(pluralStrings))
                 .to.contain('#: foo.js:1')
@@ -290,6 +391,34 @@ describe("stonejs extract:", function() {
                 .and.to.contain('msgid_plural "apples"')
                 .and.to.contain('msgstr[0] ""')
                 .and.to.contain('msgstr[1] ""');
+        });
+
+        it("handles context", function() {
+            var contextStrings = {
+                "back": {
+                    "": { refs: [{file: "foo.js", line: 1}] },
+                    "back of an object": { refs: [{file: "foo.js", line: 3}] },
+                    "going back": { refs: [{file: "bar.js", line: 42}] },
+                },
+            };
+            var result = extract.generatePo(contextStrings);
+            expect(result)
+                .to.contain('#: foo.js:1\nmsgid "back"')
+                .and.to.contain('#: foo.js:3\nmsgctxt "back of an object"\nmsgid "back"')
+                .and.to.contain('#: bar.js:42\nmsgctxt "going back"\nmsgid "back"');
+        });
+
+        it ("handles context and plural", function() {
+            var contextPluralStrings = {
+                "file": {
+                    "": { refs: [{file: "foo.js", line: 1}]},
+                    "computer file": { msgid_plural: "files", refs: [{file: "foo.js", line: 25}]},
+                }
+            }
+            var result = extract.generatePo(contextPluralStrings);
+            expect(result)
+                .to.contain('#: foo.js:1\nmsgid "file"')
+                .and.to.contain('#: foo.js:25\nmsgctxt "computer file"\nmsgid "file"\nmsgid_plural "files"');
         });
 
     });
@@ -306,7 +435,7 @@ describe("stonejs extract:", function() {
         });
 
         it("extracts strings from js files and generates the po template file", function(done) {
-            extract.main(["test/fixtures/*.js", "test/fixtures/*.html"], outputFile, {quiet: true}, function(error) {
+            extract.main(["test/fixtures/gettext.js", "test/fixtures/gettext.html"], outputFile, {quiet: true}, function(error) {
                 expect(error).not.to.be.ok();
                 expect(helpers.isFile(outputFile)).to.be.ok();
                 expect(fs.readFileSync(outputFile).toString())

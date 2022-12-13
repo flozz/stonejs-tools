@@ -132,21 +132,20 @@ extract.main = function(jsFiles, output, options, callback) {
                     }
                     for (var str in extractedStrings) {
                         if (strings[str] === undefined) {
-                            strings[str] = { refs: [] };
+                            strings[str] = {};
                         }
-                        if (extractedStrings[str].msgid_plural) {
-                            strings[str].msgid_plural = extractedStrings[str].msgid_plural;
+                        for (var msgctxt in extractedStrings[str]) {
+                            if (strings[str][msgctxt] === undefined) {
+                                strings[str][msgctxt] = { refs: [] };
+                            }
+                            if (extractedStrings[str][msgctxt].msgid_plural) {
+                                strings[str][msgctxt].msgid_plural = extractedStrings[str][msgctxt].msgid_plural;
+                            }
                         }
-                        if (strings[str].msgctxts === undefined) {
-                            strings[str].msgctxts = [];
-                        }
-                        for (var msgctxt of extractedStrings[str].msgctxts) {
-                            strings[str].msgctxts.push(msgctxt);
-                        }
-                        for (var i=0 ; i<extractedStrings[str].refs.length ; i++) {
-                            strings[str].refs.push({
+                        for (var i=0 ; i<extractedStrings[str][msgctxt].refs.length ; i++) {
+                            strings[str][msgctxt].refs.push({
                                 file: file,
-                                line: extractedStrings[str].refs[i]
+                                line: extractedStrings[str][msgctxt].refs[i]
                             });
                         }
                     }
@@ -184,7 +183,7 @@ extract.main = function(jsFiles, output, options, callback) {
  * @param {string[]} contextFunctionsNames The name of the translation functions with context support.
  * @param {string[]} pluralContextFunctionsNames The name of the translation functions with plural and context support.
  * @param {boolean} [isJsx] whether source file is jsx
- * @return {Object} Translatable strings `{ <string>: [<lines>] }`.
+ * @return {Object} Translatable strings `{ <string>: { <context>: { msgid_plural: <plural>, refs: [<lines>] } } }`.
  */
 extract.extractJsStrings = function(source, functionsNames, pluralFunctionsNames, contextFunctionsNames, pluralContextFunctionsNames, isJsx) {
     isJsx = isJsx || false;
@@ -210,28 +209,22 @@ extract.extractJsStrings = function(source, functionsNames, pluralFunctionsNames
     var f_isContext = false;  // context function flag
     var f_findPlural = false; // Find plural message
     var f_findMsgid = false;  // Find message id after context if found
-    var msgBuff = true;       // Buff to concat splitted strings
+    var msgBuff = "";         // Buff to concat splitted strings
     var msgid;                // msgid
     var line;                 // msgid line
     var msgid_plural;         // plural of the msgid string
-    var msgctxt;              // context of the msgid string
+    var msgctxt = "";         // context of the msgid string
     function pushString() {
         if (strings[msgid] === undefined) {
             strings[msgid] = {};
         }
-        if (strings[msgid].refs === undefined) {
-            strings[msgid].refs = [];
+        if (strings[msgid][msgctxt] === undefined) {
+            strings[msgid][msgctxt] = { refs: [] };
+            if (f_isPlural) {
+                strings[msgid][msgctxt].msgid_plural = msgid_plural;
+            }
         }
-        strings[msgid].refs.push(line);
-        if (f_isPlural) {
-            strings[msgid].msgid_plural = msgid_plural;
-        }
-        if (strings[msgid].msgctxts === undefined) {
-            strings[msgid].msgctxts = [];
-        }
-        if (f_isContext && !strings[msgid].msgctxts.includes(msgctxt)) {
-            strings[msgid].msgctxts.push(msgctxt);
-        }
+        strings[msgid][msgctxt].refs.push(line);
     }
     function stop() {
         f_fn = false;
@@ -244,7 +237,7 @@ extract.extractJsStrings = function(source, functionsNames, pluralFunctionsNames
         msgid = undefined;
         line = undefined;
         msgid_plural = undefined;
-        msgctxt = undefined;
+        msgctxt = "";
     }
     for (var i=0 ; i<ast.tokens.length ; i++) {
 
@@ -367,7 +360,7 @@ extract.extractJsStrings = function(source, functionsNames, pluralFunctionsNames
  * @method extractHtmlStrings
  * @static
  * @param {String} source The HTML source code.
- * @return {Object} Translatable strings `{ <string>: [<lines>] }`.
+ * @return {Object} Translatable strings `{ <string>: { "": { [<lines>] } } }`.
  */
 extract.extractHtmlStrings = function(source) {
     var $ = cheerio.load(source);
@@ -375,7 +368,7 @@ extract.extractHtmlStrings = function(source) {
     var result = {};
     //console.log(nodes("[stonejs]"));
     nodes.each(function(node) {
-        result[$(nodes[node]).html()] = { refs: [0] };
+        result[$(nodes[node]).html()] = { "": { refs: [0] }};
     });
     return result;
 };
@@ -385,7 +378,7 @@ extract.extractHtmlStrings = function(source) {
  *
  * @method generatePo
  * @static
- * @param {Object} strings the strings `{ "<msgid>": [{file: String, line: Number}] }`.
+ * @param {Object} strings the strings `{ "<msgid>": { "msgctxt": { msgid_plural: "msgid_plural", refs: [{file: String, line: Number}] } } }`.
  * @return {String} the generated po file.
  */
 extract.generatePo = function(strings) {
@@ -429,7 +422,7 @@ extract.generatePo = function(strings) {
     };
 
     function _setMessage(msgid, msgctxt) {
-        var msgid_plural = strings[msgid].msgid_plural;
+        var msgid_plural = strings[msgid][msgctxt].msgid_plural;
         if (!data.translations[msgctxt]) data.translations[msgctxt] = {};
         data.translations[msgctxt][msgid] = {
             msgctxt: msgctxt || undefined,
@@ -437,18 +430,14 @@ extract.generatePo = function(strings) {
             msgid_plural: msgid_plural || undefined,
             msgstr: msgid_plural ? ["", ""] : "",
             comments: {
-                reference: _buildRef(strings[msgid].refs)
+                reference: _buildRef(strings[msgid][msgctxt].refs)
             }
         };
     }
 
     for (var msgid in strings) {
-        if (strings[msgid].msgctxts.length) {
-            for (var msgctxt of strings[msgid].msgctxts) {
-                _setMessage(msgid, msgctxt);
-            }
-        } else {
-            _setMessage(msgid, "");
+        for (var msgctxt in strings[msgid]) {
+            _setMessage(msgid, msgctxt);
         }
     }
 
