@@ -285,7 +285,7 @@ describe("stonejs extract:", function() {
 
                     ["_", "gettext", "lazyGettext"], [], ["pgettext", "lazyPgettext"], []
                 );
-                expect(Object.keys(result.back)).to.have.length(2)
+                expect(Object.keys(result.back)).to.have.length(2);
                 expect(result.back).to.have.keys("", "back of an object");
             });
 
@@ -344,7 +344,7 @@ describe("stonejs extract:", function() {
 
                     ["_", "gettext", "lazyGettext"], [], [], ["npgettext", "lazyNpgettext"]
                 );
-                expect(Object.keys(result.file)).to.have.length(2)
+                expect(Object.keys(result.file)).to.have.length(2);
                 expect(result.file).to.have.keys("", "context");
             });
         });
@@ -414,7 +414,7 @@ describe("stonejs extract:", function() {
                     "": { refs: [{file: "foo.js", line: 1}]},
                     "computer file": { msgid_plural: "files", refs: [{file: "foo.js", line: 25}]},
                 }
-            }
+            };
             var result = extract.generatePo(contextPluralStrings);
             expect(result)
                 .to.contain('#: foo.js:1\nmsgid "file"')
