@@ -59,16 +59,23 @@ describe("stonejs update:", function() {
 
             it("updates the po file", function() {
                 expect(update.updatePo(poData, potData))
-                    .to.contain('msgctxt "object containing data"')
-                    .and.to.contain('msgid "File"')
-                    .and.to.contain('msgstr ""')
-                    .and.to.contain('msgctxt "action of filing a form"')
-                    .and.to.contain('msgid "File"')
-                    .and.to.contain('msgstr ""');
+                    .to.contain('msgctxt "object containing data"\nmsgid "File"\nmsgstr ""')
+                    .and.to.contain('msgctxt "action of filing a form"\nmsgid "File"\nmsgstr ""');
             });
         });
 
-        describe("update string with context and plural forms", function() {});
+        describe("update string with context and plural forms", function() {
+            var potFile = "test/fixtures/npgettext.pot";
+            var inputPoFile = "test/fixtures/npgettext-fr.po";
+            var potData = fs.readFileSync(potFile);
+            var poData = fs.readFileSync(inputPoFile);
+
+            it("updates the po file", function() {
+                expect(update.updatePo(poData, potData))
+                    .to.contain('msgctxt "computer file"\nmsgid "File"\nmsgid_plural "Files"\nmsgstr[0] "Fichier"\nmsgstr[1] "Fichiers"')
+                    .and.to.contain('msgctxt "object containing data"\nmsgid "File"\nmsgid_plural "Files"\nmsgstr[0] ""\nmsgstr[1] ""');
+            });
+        });
     });
 
     describe("update.main", function() {
