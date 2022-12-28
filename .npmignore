@@ -1,5 +1,6 @@
-node_modules
-doc
-test
+node_modules/
+doc/
+test/
 Gruntfile.js
-.travis.yml
+.github/
+RELEASE.rst
