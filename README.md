@@ -1,10 +1,9 @@
 # Stone.js Tools
 
 [![Lint and test](https://github.com/flozz/stonejs-tools/actions/workflows/tests.yml/badge.svg)](https://github.com/flozz/stonejs-tools/actions/workflows/tests.yml)
-[ ![NPM Version](http://img.shields.io/npm/v/stonejs-tools.svg?style=flat)](https://www.npmjs.com/package/stonejs-tools)
-[ ![License](http://img.shields.io/npm/l/stonejs-tools.svg?style=flat)](https://github.com/flozz/stonejs-tools/blob/master/LICENSE)
+[![NPM Version](http://img.shields.io/npm/v/stonejs-tools.svg?style=flat)](https://www.npmjs.com/package/stonejs-tools)
+[![License](http://img.shields.io/npm/l/stonejs-tools.svg?style=flat)](https://github.com/flozz/stonejs-tools/blob/master/LICENSE)
 [![Discord](https://img.shields.io/badge/chat-Discord-8c9eff?logo=discord&logoColor=ffffff)](https://discord.gg/P77sWhuSs4)
-
 
 Tools for extracting/compiling translatable strings from Javascript/HTML sources.
 
@@ -118,6 +117,7 @@ Examples:
 * **[NEXT]** (changes on `master` but not released yet):
 
   * Added support of string with context (`pgettext`, `npgettext`,...) (@Krenodeno, #32)
+  * Updated dependencies
 
 * **v1.4.0:** Update JS parser and enable latest ES syntaxes
 * **v1.3.0:** Add the line and the column of syntax errors (#25)
