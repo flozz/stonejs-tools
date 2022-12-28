@@ -125,6 +125,10 @@ Want to support this project?
 
 * **[NEXT]** (changes on `master` but not released yet):
 
+  * Nothing yet ;)
+
+* **v1.5.0:**
+
   * Added support of string with context (`pgettext`, `npgettext`,...) (@Krenodeno, #32)
   * Updated dependencies
 
