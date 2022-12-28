@@ -114,25 +114,36 @@ Examples:
 
 ## Changelog
 
-* **1.4.0:** Update JS parser and enable latest ES syntaxes
-* **1.3.0:** Add the line and the column of syntax errors (#25)
-* **1.2.0:**
+* **[NEXT]** (changes on `master` but not released yet):
+
+  * Added support of string with context (`pgettext`, `npgettext`,...) (@Krenodeno, #32)
+
+* **v1.4.0:** Update JS parser and enable latest ES syntaxes
+* **v1.3.0:** Add the line and the column of syntax errors (#25)
+
+* **v1.2.0:**
+
   * Support of plurals (`ngettext()`) (@jbghoul, #11)
   * Support of `gettext_noop()` (@jbghoul, #16)
   * Update dependencies
-* **1.1.0:**
+
+* **v1.1.0:**
+
   * ES6 modules (import / export) support
   * JSX support
   * dependencies updates
   * WARNING: octal literals are not supported anymore!
-* **1.0.8:** Adds the `.twig` extention as HTML file list
-* **1.0.7:** Allows string to be extracted from es2015 (ES6) sources
-* **1.0.6:** Force encoding to UTF-8 when reading/writing files
-* **1.0.5:** Fixes crashes with wrong call of logging functions
-* **1.0.4:** Fixes path issue on Window (issue #2)
-* **1.0.3:** Fixes crash when the merged po file does not contain line references
-* **1.0.2:**
+
+* **v1.0.8:** Adds the `.twig` extention as HTML file list
+* **v1.0.7:** Allows string to be extracted from es2015 (ES6) sources
+* **v1.0.6:** Force encoding to UTF-8 when reading/writing files
+* **v1.0.5:** Fixes crashes with wrong call of logging functions
+* **v1.0.4:** Fixes path issue on Window (issue #2)
+* **v1.0.3:** Fixes crash when the merged po file does not contain line references
+* **v1.0.2:**
+
   * Fixes crash when parsing js files containing syntax errors
   * Reporting improved (extracted string ans skipped files count, syntax errors)
-* **1.0.1:** Makes stonejs command working on Unix
-* **1.0.0:** First Release
+
+* **v1.0.1:** Makes stonejs command working on Unix
+* **v1.0.0:** First Release
