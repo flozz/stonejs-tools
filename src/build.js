@@ -140,15 +140,18 @@ build.poToJson = function(poData) {
     catalog[lang] = {
         "plural-forms": po.headers["plural-forms"] || "nplurals=2; plural=(n != 1);",
         messages: {
-            // "<msgid>": ["<msgstr>"]
+            // "<msgid>": { "<msgctx>": ["<msgstr>", "<msgstr_plural>"]}
         }
     };
 
-    for (var msgid in po.translations[""]) {
-        if (msgid === "") continue;
-        catalog[lang].messages[msgid] = po.translations[""][msgid].msgstr;
+    for (var msgctxt in po.translations) {
+        for (var msgid in po.translations[msgctxt]) {
+            if (msgid === "") continue;
+            if (!catalog[lang].messages[msgid]) catalog[lang].messages[msgid] = {};
+            var jsonContext = msgctxt === "" ? "*" : msgctxt;
+            catalog[lang].messages[msgid][jsonContext] = po.translations[msgctxt][msgid].msgstr;
+        }
     }
-
     return catalog;
 };
 

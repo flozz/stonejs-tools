@@ -30,7 +30,7 @@ describe("stonejs build:", function() {
                 .and.to.have.key("translatable 3")
                 .and.to.have.key("translatable 4")
                 .and.not.to.have.key("removed 2");
-            expect(catalogs.fr.messages["translatable 1"]).to.contain("traductible 1");
+            expect(catalogs.fr.messages["translatable 1"]['*'][0]).to.contain("traductible 1");
         });
 
         describe("plural form messages", function() {
@@ -41,9 +41,40 @@ describe("stonejs build:", function() {
                 expect(catalogs.cs).to.have.key("messages");
                 expect(catalogs.cs.messages)
                     .to.have.key("horse");
-                expect(catalogs.cs.messages.horse).to.contain("kůň")
+                expect(catalogs.cs.messages.horse['*']).to.contain("kůň")
                     .and.to.contain("koně")
                     .and.to.contain("koní");
+            });
+        });
+
+        describe("context from message", function() {
+            var poFile = "test/fixtures/pgettext-fr.po";
+            var poData = fs.readFileSync(poFile);
+            it("has multiple context keys for a given string", function() {
+                var catalogs = build.poToJson(poData);
+                expect(catalogs.fr).to.have.key("messages");
+                expect(catalogs.fr.messages).to.have.key("Back");
+                expect(catalogs.fr.messages.Back).to.have.keys("going back in a menu", "back of an object");
+                expect(catalogs.fr.messages.Back["going back in a menu"]).to.contain("Retour");
+                expect(catalogs.fr.messages.Back["back of an object"]).to.contain("Arrière");
+            });
+        });
+
+        describe("context with plural form", function() {
+            var poFile = "test/fixtures/npgettext-fr.po";
+            var poData = fs.readFileSync(poFile);
+            it("has the plural messages", function() {
+                var catalogs = build.poToJson(poData);
+                expect(catalogs.fr).to.have.key("messages");
+                expect(catalogs.fr.messages).to.have.key("File");
+                expect(catalogs.fr.messages.File).to.have.keys("computer file", "*");
+                expect(catalogs.fr.messages.File["computer file"])
+                    .to.contain("Fichier")
+                    .and.to.contain("Fichiers");
+            });
+            it("can have a non contextual string with the same id as a contextual one", function() {
+                var catalogs = build.poToJson(poData);
+                expect(catalogs.fr.messages.File["*"]).to.contain("Fichier");
             });
         });
 

@@ -1,0 +1,29 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2022-12-08 17:23:41+0100\n"
+"PO-Revision-Date: 2022-12-08 17:23:41+0100\n"
+"Language: C\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: test for buildSpec.js
+msgctxt "going back in a menu"
+msgid "Back"
+msgstr ""
+
+#: test for buildSpec.js
+msgctxt "back of an object"
+msgid "Back"
+msgstr ""
+
+#: test for updateSpec.js
+msgctxt "object containing data"
+msgid "File"
+msgstr ""
+
+#: test for updateSpec.js
+msgctxt "action of filing a form"
+msgid "File"
+msgstr ""
