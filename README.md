@@ -1,8 +1,9 @@
 # Stone.js Tools
 
-[ ![Build Status](https://api.travis-ci.org/flozz/stonejs-tools.svg?branch=master) ](https://travis-ci.org/flozz/stonejs-tools)
-[ ![NPM Version](http://img.shields.io/npm/v/stonejs-tools.svg?style=flat) ](https://www.npmjs.com/package/stonejs-tools)
-[ ![License](http://img.shields.io/npm/l/stonejs-tools.svg?style=flat) ](https://www.npmjs.com/package/stonejs-tools)
+[![Lint and test](https://github.com/flozz/stonejs-tools/actions/workflows/tests.yml/badge.svg)](https://github.com/flozz/stonejs-tools/actions/workflows/tests.yml)
+[ ![NPM Version](http://img.shields.io/npm/v/stonejs-tools.svg?style=flat)](https://www.npmjs.com/package/stonejs-tools)
+[ ![License](http://img.shields.io/npm/l/stonejs-tools.svg?style=flat)](https://github.com/flozz/stonejs-tools/blob/master/LICENSE)
+[![Discord](https://img.shields.io/badge/chat-Discord-8c9eff?logo=discord&logoColor=ffffff)](https://discord.gg/P77sWhuSs4)
 
 
 Tools for extracting/compiling translatable strings from Javascript/HTML sources.
