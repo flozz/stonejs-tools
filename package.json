@@ -4,7 +4,7 @@
   "description": "Tools for extracting/compiling translatable strings from Javascript/HTML source",
   "main": "src/index.js",
   "scripts": {
-    "test": "grunt test"
+    "test": "grunt lint test"
   },
   "repository": {
     "type": "git",
