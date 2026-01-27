@@ -130,6 +130,10 @@ Want to support this project?
 
   * Nothing yet ;)
 
+* **v1.6.1:**
+
+  * fix(extract): Fixed extraction of strings with differents contexts in same file (#57, @jbghoul)
+
 * **v1.6.0:**
 
   * feat(update): Added an option to remove obsolete translations (#56, @jbghoul)
