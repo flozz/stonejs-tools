@@ -141,12 +141,12 @@ extract.main = function(jsFiles, output, options, callback) {
                             if (extractedStrings[str][msgctxt].msgid_plural) {
                                 strings[str][msgctxt].msgid_plural = extractedStrings[str][msgctxt].msgid_plural;
                             }
-                        }
-                        for (var i=0 ; i<extractedStrings[str][msgctxt].refs.length ; i++) {
-                            strings[str][msgctxt].refs.push({
-                                file: file,
-                                line: extractedStrings[str][msgctxt].refs[i]
-                            });
+                            for (var i=0 ; i<extractedStrings[str][msgctxt].refs.length ; i++) {
+                                strings[str][msgctxt].refs.push({
+                                    file: file,
+                                    line: extractedStrings[str][msgctxt].refs[i]
+                                });
+                            }
                         }
                     }
                     doneCb();
