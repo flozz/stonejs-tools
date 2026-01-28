@@ -1,7 +1,6 @@
 "use strict";
 
 var fs = require("fs");
-
 var async = require("async");
 var glob = require("glob");
 var espree = require("espree");
@@ -9,7 +8,6 @@ var gettextParser = require("gettext-parser");
 var cheerio = require("cheerio");
 
 var helpers = require("./helpers.js");
-
 
 /**
  * @class extract
@@ -96,7 +94,7 @@ extract.main = function(jsFiles, output, options, callback) {
                     var ext = file.toLowerCase().split(".");
                     ext = ext[ext.length-1];
                     if (["html", "htm", "xhtml", "xml", "twig"].indexOf(ext) >= 0) {
-                        extractedStrings = extract.extractHtmlStrings(data.toString());
+                        extractedStrings = extract.extractHtmlStrings(data.toString(), options.functions, options.pluralFunctions, options.contextFunctions, options.pluralContextFunctions);
                     }
                     else if (["jsx"].indexOf(ext) >= 0) {
                         try {
@@ -360,16 +358,67 @@ extract.extractJsStrings = function(source, functionsNames, pluralFunctionsNames
  * @method extractHtmlStrings
  * @static
  * @param {String} source The HTML source code.
+ * @param {string[]} functionsNames The name of the translation functions to search in the source.
+ * @param {string[]} pluralFunctionsNames The name of the translation functions with plural support.
+ * @param {string[]} contextFunctionsNames The name of the translation functions with context support.
+ * @param {string[]} pluralContextFunctionsNames The name of the translation functions with plural and context support.
  * @return {Object} Translatable strings `{ <string>: { "": { [<lines>] } } }`.
  */
-extract.extractHtmlStrings = function(source) {
+extract.extractHtmlStrings = function(source, functionsNames, pluralFunctionsNames, contextFunctionsNames, pluralContextFunctionsNames) {
     var $ = cheerio.load(source);
-    var nodes = $("[stonejs]");
     var result = {};
-    //console.log(nodes("[stonejs]"));
-    nodes.each(function(node) {
-        result[$(nodes[node]).html()] = { "": { refs: [0] }};
+
+    // Extract translatable strings from HTML elements
+    $("[stonejs]").each(function(index, element) {
+        result[$(element).html()] = { "": { refs: [0] }};
     });
+
+    // Extract translatable strings from inline JavaScript
+    $("script").each(function(index, element) {
+        var scriptContent = $(element).html();
+        if (scriptContent) {
+            var extractedJsStrings = extract.extractJsStrings(scriptContent, functionsNames, pluralFunctionsNames, contextFunctionsNames, pluralContextFunctionsNames, false);
+            for (var str in extractedJsStrings) {
+                if (result[str] === undefined) {
+                    result[str] = {};
+                }
+                for (var msgctxt in extractedJsStrings[str]) {
+                    if (result[str][msgctxt] === undefined) {
+                        result[str][msgctxt] = { refs: [] };
+                    }
+                    if (extractedJsStrings[str][msgctxt].msgid_plural) {
+                        result[str][msgctxt].msgid_plural = extractedJsStrings[str][msgctxt].msgid_plural;
+                    }
+                    result[str][msgctxt].refs = result[str][msgctxt].refs.concat(extractedJsStrings[str][msgctxt].refs);
+                }
+            }
+        }
+    });
+
+    // Extract translatable strings from Alpine.js x-data attribute
+    $("[x-data]").each(function(index, element) {
+        var xDataContent = $(element).attr("x-data");
+        if (xDataContent) {
+            try {
+                var matches = xDataContent.match(/_\("([^"]+)"\)/g);
+                if (matches) {
+                    matches.forEach(match => {
+                        var msgid = match.match(/_\("([^"]+)"\)/)[1];
+                        if (result[msgid] === undefined) {
+                            result[msgid] = {};
+                        }
+                        if (result[msgid][""] === undefined) {
+                            result[msgid][""] = { refs: [] };
+                        }
+                        result[msgid][""].refs.push(index + 1); // Use element index as a reference
+                    });
+                }
+            } catch (e) {
+                console.error("Failed to parse x-data content: ", e);
+            }
+        }
+    });
+
     return result;
 };
 
@@ -443,6 +492,5 @@ extract.generatePo = function(strings) {
 
     return gettextParser.po.compile(data).toString();
 };
-
 
 module.exports = extract;
